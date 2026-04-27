@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alienray — AI 해커 기반 모의해킹 서비스</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink:        #0A1A14;
+  --ink-mid:    #2C4A3E;
+  --ink-mute:   #6B8C80;
+  --teal:       #1D9E75;
+  --teal-hi:    #25C490;
+  --teal-pale:  #E6F7F0;
+  --teal-dark:  #041A14;
+  --surface:    #F5F8F6;
+  --border:     rgba(29,158,117,0.12);
+  --border-mid: rgba(29,158,117,0.22);
+  --white:      #FFFFFF;
+  --font-main:  'DM Sans', sans-serif;
+  --font-mono:  'DM Mono', monospace;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-main);
+  background: var(--white);
+  color: var(--ink);
+  font-size: 15px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+a { text-decoration: none; color: inherit; }
+
+.wrap { max-width: 1020px; margin: 0 auto; padding: 0 28px; }
+
+/* NAV */
+.nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(4,26,20,0.96);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(29,158,117,0.15);
+}
+.nav-inner {
+  max-width: 1020px; margin: 0 auto; padding: 0 28px;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 56px;
+}
+.nav-brand { display: flex; align-items: center; gap: 10px; }
+.nav-brand-logo {
+  width: 28px; height: 28px; background: var(--teal);
+  border-radius: 6px; display: flex; align-items: center; justify-content: center;
+}
+.nav-brand-logo svg { width: 16px; height: 16px; }
+.nav-brand-name { font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.85); letter-spacing: 0.03em; }
+.nav-brand-name span { color: var(--teal-hi); }
+.nav-links { display: flex; gap: 24px; }
+.nav-links a { font-size: 12px; color: rgba(255,255,255,0.45); transition: color .15s; }
+.nav-links a:hover { color: rgba(255,255,255,0.8); }
+.nav-cta {
+  background: var(--teal); color: var(--white);
+  font-size: 12px; font-weight: 500;
+  padding: 7px 18px; border-radius: 5px;
+}
+
+/* HERO */
+.hero {
+  background: var(--teal-dark);
+  padding: 80px 0 64px;
+  position: relative; overflow: hidden;
+}
+.hero-bg {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  pointer-events: none;
+}
+.hero-inner {
+  position: relative; z-index: 2;
+}
+.hero-service-tag {
+  font-family: var(--font-mono);
+  font-size: 11px; color: var(--teal-hi);
+  letter-spacing: 0.08em;
+  margin-bottom: 18px; display: block;
+}
+.hero h1 {
+  font-size: 42px; font-weight: 500; color: var(--white);
+  line-height: 1.3; margin-bottom: 28px; letter-spacing: -0.01em;
+  max-width: 800px;
+}
+.hero h1 em { color: var(--teal-hi); font-style: normal; display: block; }
+.hero-ctas { display: flex; gap: 12px; align-items: center; }
+.btn-primary {
+  background: var(--teal); color: var(--white);
+  font-size: 13px; font-weight: 500;
+  padding: 11px 24px; border-radius: 6px;
+  display: inline-flex; align-items: center; gap: 7px;
+  transition: background .15s;
+}
+.btn-primary:hover { background: var(--teal-hi); }
+.btn-ghost {
+  font-size: 13px; color: rgba(255,255,255,0.5);
+  display: inline-flex; align-items: center; gap: 5px;
+  border-bottom: 1px solid rgba(255,255,255,0.2);
+  padding-bottom: 1px;
+}
+
+/* SECTION COMMON */
+.section { padding: 28px 0; }
+.sec-title {
+  font-size: 26px; font-weight: 500;
+  color: var(--ink); line-height: 1.3;
+  margin-bottom: 8px;
+}
+.sec-desc {
+  font-size: 14px; color: var(--ink-mute);
+  line-height: 1.75; max-width: 680px;
+  margin-bottom: 28px;
+}
+
+/* WHY */
+.why-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
+.why-left p { font-size: 14px; color: var(--ink-mute); line-height: 1.8; margin-bottom: 10px; }
+.why-cards { display: flex; flex-direction: column; gap: 12px; }
+.why-card {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: 10px; padding: 16px 18px;
+  display: flex; align-items: flex-start; gap: 14px;
+}
+.why-icon {
+  width: 32px; height: 32px; border-radius: 8px;
+  background: var(--teal-pale);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; font-size: 15px;
+}
+.why-card-name { font-size: 13px; font-weight: 500; color: var(--ink); margin-bottom: 4px; }
+.why-card-desc { font-size: 12px; color: var(--ink-mute); line-height: 1.6; }
+
+/* FLOW */
+.flow-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+.flow-item { background: var(--white); padding: 20px 16px; position: relative; }
+.flow-num { font-family: var(--font-mono); font-size: 11px; color: var(--teal); margin-bottom: 8px; display: block; }
+.flow-name { font-size: 13px; font-weight: 500; color: var(--ink); margin-bottom: 6px; }
+.flow-desc { font-size: 11px; color: var(--ink-mute); line-height: 1.65; }
+.flow-note { font-size: 11px; color: var(--ink-mute); margin-top: 14px; font-style: italic; }
+
+/* BRAND */
+.brand-box {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 12px; padding: 36px;
+  text-align: center;
+}
+.brand-name { font-size: 22px; font-weight: 500; color: var(--ink); margin-bottom: 12px; }
+.brand-name span { color: var(--teal); }
+.brand-desc { font-size: 14px; color: var(--ink-mute); line-height: 1.8; margin-bottom: 12px; }
+.brand-note { font-size: 11px; color: var(--ink-mute); }
+.brand-note strong { color: var(--teal); }
+
+/* LINEUP */
+.lineup-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; }
+.lineup-card { border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+.lineup-head { padding: 14px 16px; border-bottom: 1px solid var(--border); }
+.lineup-name { font-size: 14px; font-weight: 500; color: var(--ink); margin-bottom: 3px; }
+.lineup-tag { font-family: var(--font-mono); font-size: 10px; color: var(--teal); }
+.lineup-body { padding: 14px 16px; }
+.lineup-body p { font-size: 12px; color: var(--ink-mute); line-height: 1.65; }
+.lineup-badge {
+  display: inline-block; font-size: 10px;
+  color: var(--ink-mid); background: var(--teal-pale);
+  border: 1px solid var(--border-mid);
+  border-radius: 3px; padding: 2px 8px;
+  font-family: var(--font-mono);
+}
+.lineup-note { font-size: 11px; color: var(--ink-mute); margin-top: 18px; text-align: center; }
+
+/* CTA */
+.cta-section {
+  background: var(--teal-pale); padding: 56px 0; text-align: center;
+  border-top: 1px solid var(--border-mid);
+}
+.cta-section h2 { font-size: 26px; font-weight: 500; color: var(--ink); margin-bottom: 10px; }
+.cta-section p { font-size: 14px; color: var(--ink-mid); margin-bottom: 28px; }
+.cta-btns { display: flex; justify-content: center; gap: 12px; }
+.btn-cta { background: var(--teal); color: var(--white); font-size: 13px; font-weight: 500; padding: 12px 28px; border-radius: 6px; }
+.btn-cta-outline { border: 1px solid var(--border-mid); color: var(--ink-mid); font-size: 13px; padding: 12px 28px; border-radius: 6px; }
+
+/* FOOTER */
+.footer { background: #F7F8F7; padding: 48px 0 0; border-top: 1px solid #E4E9E6; }
+.footer-inner { display: grid; grid-template-columns: 220px 160px 180px 260px; gap: 0; margin-bottom: 0; }
+.footer-brand { padding-right: 40px; }
+.footer-logo { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+.footer-logo-mark { width: 28px; height: 28px; }
+.footer-logo-name { font-size: 15px; font-weight: 700; color: #5B3FBF; letter-spacing: 0.02em; }
+.footer-brand-desc { font-size: 12px; color: #6B7C74; line-height: 1.7; margin-bottom: 18px; }
+.footer-sns { display: flex; gap: 8px; }
+.footer-sns-icon { width: 30px; height: 30px; border-radius: 4px; border: 1px solid #D8DDD9; background: var(--white); display: flex; align-items: center; justify-content: center; font-size: 12px; color: #5B7068; }
+.footer-col { padding: 0 20px; }
+.footer-col h5 { font-size: 13px; font-weight: 600; color: #1A2E26; margin-bottom: 14px; }
+.footer-col a { display: block; font-size: 13px; color: #5B7068; margin-bottom: 10px; }
+.footer-contact { padding-left: 20px; }
+.footer-contact h5 { font-size: 13px; font-weight: 600; color: #1A2E26; margin-bottom: 14px; }
+.footer-contact-group { margin-bottom: 14px; }
+.footer-contact-label { font-size: 12px; font-weight: 600; color: #1A2E26; margin-bottom: 3px; }
+.footer-contact-tel { font-size: 12px; color: #5B7068; margin-bottom: 2px; }
+.footer-contact-email { font-size: 12px; color: var(--teal); }
+.footer-bottom { border-top: 1px solid #D8DDD9; margin-top: 36px; padding: 16px 0; display: flex; justify-content: space-between; align-items: center; }
+.footer-copyright { font-size: 11px; color: #8FA89C; }
+.footer-bottom-links { display: flex; gap: 16px; }
+.footer-bottom-links a { font-size: 11px; color: #5B7068; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="nav-brand">
+      <div class="nav-brand-logo">
+        <svg viewBox="0 0 16 16" fill="none"><path d="M8 2L2 5v4c0 3 2.5 5.2 6 6 3.5-.8 6-3 6-6V5L8 2z" fill="white" opacity=".9"/></svg>
+      </div>
+      <span class="nav-brand-name">STEALIEN <span>Alienray</span></span>
+    </div>
+    <div class="nav-links">
+      <a href="#why">서비스 개요</a>
+      <a href="#process">서비스 방식</a>
+      <a href="#brand">Alienray</a>
+      <a href="#lineup">라인업</a>
+    </div>
+    <a href="#cta" class="nav-cta">도입 상담</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <!-- 배경 SVG: 우측 끝에서 좌측 끝까지 방사 -->
+  <svg class="hero-bg" viewBox="0 0 1200 400" preserveAspectRatio="xMaxYMid slice" xmlns="http://www.w3.org/2000/svg">
+    <!-- 원점: 우측 끝 중앙 (1200, 200) -->
+    <!-- 동심원 -->
+    <circle cx="1200" cy="200" r="520" fill="none" stroke="rgba(29,158,117,0.06)" stroke-width="1"/>
+    <circle cx="1200" cy="200" r="380" fill="none" stroke="rgba(29,158,117,0.08)" stroke-width="0.8"/>
+    <circle cx="1200" cy="200" r="250" fill="none" stroke="rgba(29,158,117,0.1)"  stroke-width="0.8"/>
+    <circle cx="1200" cy="200" r="140" fill="rgba(29,158,117,0.04)" stroke="#1D9E75" stroke-width="0.8"/>
+    <circle cx="1200" cy="200" r="60"  fill="rgba(29,158,117,0.1)"  stroke="#1D9E75" stroke-width="1"/>
+    <circle cx="1200" cy="200" r="22"  fill="rgba(29,158,117,0.2)"  stroke="#1D9E75" stroke-width="1.2"/>
+    <circle cx="1200" cy="200" r="8"   fill="#1D9E75"/>
+    <!-- 방사선 — 좌측 끝까지 -->
+    <line x1="1200" y1="200" x2="0"    y2="0"   stroke="#1D9E75" stroke-width="0.6" stroke-dasharray="6 5" opacity="0.3"/>
+    <line x1="1200" y1="200" x2="0"    y2="60"  stroke="#1D9E75" stroke-width="0.7" stroke-dasharray="6 5" opacity="0.35"/>
+    <line x1="1200" y1="200" x2="0"    y2="130" stroke="#1D9E75" stroke-width="0.8" stroke-dasharray="6 5" opacity="0.42"/>
+    <line x1="1200" y1="200" x2="0"    y2="200" stroke="#1D9E75" stroke-width="1.0" stroke-dasharray="6 5" opacity="0.5"/>
+    <line x1="1200" y1="200" x2="0"    y2="270" stroke="#1D9E75" stroke-width="0.8" stroke-dasharray="6 5" opacity="0.42"/>
+    <line x1="1200" y1="200" x2="0"    y2="340" stroke="#1D9E75" stroke-width="0.7" stroke-dasharray="6 5" opacity="0.35"/>
+    <line x1="1200" y1="200" x2="0"    y2="400" stroke="#1D9E75" stroke-width="0.6" stroke-dasharray="6 5" opacity="0.3"/>
+    <line x1="1200" y1="200" x2="200"  y2="0"   stroke="#1D9E75" stroke-width="0.6" stroke-dasharray="5 5" opacity="0.28"/>
+    <line x1="1200" y1="200" x2="200"  y2="400" stroke="#1D9E75" stroke-width="0.6" stroke-dasharray="5 5" opacity="0.28"/>
+    <line x1="1200" y1="200" x2="500"  y2="0"   stroke="#1D9E75" stroke-width="0.5" stroke-dasharray="5 5" opacity="0.22"/>
+    <line x1="1200" y1="200" x2="500"  y2="400" stroke="#1D9E75" stroke-width="0.5" stroke-dasharray="5 5" opacity="0.22"/>
+    <line x1="1200" y1="200" x2="800"  y2="0"   stroke="#1D9E75" stroke-width="0.5" stroke-dasharray="4 5" opacity="0.18"/>
+    <line x1="1200" y1="200" x2="800"  y2="400" stroke="#1D9E75" stroke-width="0.5" stroke-dasharray="4 5" opacity="0.18"/>
+    <!-- 끝점 노드 -->
+    <circle cx="0"   cy="0"   r="3"   fill="#1D9E75" opacity="0.35"/>
+    <circle cx="0"   cy="60"  r="3.5" fill="#1D9E75" opacity="0.4"/>
+    <circle cx="0"   cy="130" r="4"   fill="#1D9E75" opacity="0.5"/>
+    <circle cx="0"   cy="200" r="4.5" fill="#1D9E75" opacity="0.55"/>
+    <circle cx="0"   cy="270" r="4"   fill="#1D9E75" opacity="0.5"/>
+    <circle cx="0"   cy="340" r="3.5" fill="#1D9E75" opacity="0.4"/>
+    <circle cx="0"   cy="400" r="3"   fill="#1D9E75" opacity="0.35"/>
+    <circle cx="200" cy="0"   r="3"   fill="#1D9E75" opacity="0.3"/>
+    <circle cx="200" cy="400" r="3"   fill="#1D9E75" opacity="0.3"/>
+    <circle cx="500" cy="0"   r="2.5" fill="#1D9E75" opacity="0.25"/>
+    <circle cx="500" cy="400" r="2.5" fill="#1D9E75" opacity="0.25"/>
+  </svg>
+  <div class="wrap">
+    <div class="hero-inner">
+      <span class="hero-service-tag">AI Hacker-Based Pentest Service</span>
+      <h1>
+        AI 해커가 광범위한 자산을 자동 점검하고<br>
+        <em>화이트 해커가 정밀하게 검증하는 보안 서비스</em>
+      </h1>
+      <div class="hero-ctas">
+        <a href="#cta" class="btn-primary">▶ 문의하기</a>
+        <a href="#cta" class="btn-ghost">자료 요청 →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 서비스 개요 -->
+<section class="section" id="why">
+  <div class="wrap">
+    <div class="sec-title">기존 모의해킹은 한계가 있습니다</div>
+    <div class="why-layout">
+      <div class="why-left">
+        <p>사람이 수동으로 점검하는 방식은 시간과 범위에 제약이 있습니다.<br>공격자는 이미 AI를 활용해 더 빠르고 광범위하게 움직이고 있습니다.</p>
+        <p>Alienray는 AI 해커가 먼저 움직이고,<br>고급 화이트해커 전문가가 정확하게 검증합니다.</p>
+      </div>
+      <div class="why-cards">
+        <div class="why-card">
+          <div class="why-icon">⚡</div>
+          <div>
+            <div class="why-card-name">AI 기반 자동화</div>
+            <div class="why-card-desc">24시간 쉬지 않고 대규모 자산을 탐색하고 공격 시뮬레이션 수행</div>
+          </div>
+        </div>
+        <div class="why-card">
+          <div class="why-icon">🔁</div>
+          <div>
+            <div class="why-card-name">대규모 · 지속적 점검</div>
+            <div class="why-card-desc">단발성이 아닌 반복·연속적 보안 검증으로 상시 취약점 탐지</div>
+          </div>
+        </div>
+        <div class="why-card">
+          <div class="why-icon">👁</div>
+          <div>
+            <div class="why-card-name">Human in the Loop</div>
+            <div class="why-card-desc">AI가 수집한 취약점을 고급 화이트해커 전문가가 직접 검증하고 리포트</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 서비스 방식 -->
+<section class="section" id="process">
+  <div class="wrap">
+    <div class="sec-title">AI와 전문가가 함께 움직이는 구조</div>
+    <p class="sec-desc">4단계 프로세스로 빠짐없이 검증합니다</p>
+    <div class="flow-grid">
+      <div class="flow-item">
+        <span class="flow-num">01</span>
+        <div class="flow-name">AI 탐색 · 공격</div>
+        <div class="flow-desc">AI가 자동으로 자산을 스캔하고 공격 시뮬레이션 수행</div>
+      </div>
+      <div class="flow-item">
+        <span class="flow-num">02</span>
+        <div class="flow-name">취약점 수집</div>
+        <div class="flow-desc">발견된 취약점을 우선순위별로 분류·수집</div>
+      </div>
+      <div class="flow-item">
+        <span class="flow-num">03</span>
+        <div class="flow-name">전문가 검증</div>
+        <div class="flow-desc">고급 화이트해커가 진위·영향도를 직접 확인</div>
+      </div>
+      <div class="flow-item">
+        <span class="flow-num">04</span>
+        <div class="flow-name">리포트 제공</div>
+        <div class="flow-desc">위험도·재현 방법·개선안 포함 최종 보고서 제공</div>
+      </div>
+    </div>
+    <p class="flow-note">* 추후 인포그래픽 이미지로 교체 가능</p>
+  </div>
+</section>
+
+<!-- Alienray 브랜드 소개 -->
+<section class="section" id="brand">
+  <div class="wrap">
+    <div class="brand-box">
+      <div class="brand-name"><span>Alienray</span> — AI 해커 기술 브랜드</div>
+      <p class="brand-desc">Alienray는 스틸리언이 개발한 AI 해커 기반 보안 점검 라인업입니다.<br>각 영역별 특화된 AI 엔진이 공격자 관점에서 자산을 분석하고,<br>자동화된 탐색과 전문가 검증을 결합해 기존 모의해킹의 한계를 넘습니다.</p>
+      <p class="brand-note">* Alienray Windows · IoT는 스틸리언 자체 기술 <strong>Diffuto</strong> 기반으로 수행됩니다.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 라인업 -->
+<section class="section" id="lineup">
+  <div class="wrap">
+    <div class="sec-title">6개 영역, AI가 동시에 점검합니다</div>
+    <p class="sec-desc">각 영역별 특화된 AI 엔진으로 공격 표면 전체를 커버합니다</p>
+    <div class="lineup-grid">
+      <div class="lineup-card">
+        <div class="lineup-head">
+          <div class="lineup-name">Alienray Surface</div>
+          <div class="lineup-tag">공격 표면 관리</div>
+        </div>
+        <div class="lineup-body">
+          <p>외부 노출 자산을 AI가 자동 탐색·분류하여 공격 표면을 가시화합니다</p>
+        </div>
+      </div>
+      <div class="lineup-card">
+        <div class="lineup-head">
+          <div class="lineup-name">Alienray Web</div>
+          <div class="lineup-tag">웹 모의해킹</div>
+        </div>
+        <div class="lineup-body">
+          <p>웹 서비스 전반의 취약점을 AI가 자동 탐지합니다</p>
+        </div>
+      </div>
+      <div class="lineup-card">
+        <div class="lineup-head">
+          <div class="lineup-name">Alienray Mobile</div>
+          <div class="lineup-tag">모바일 앱 보안</div>
+        </div>
+        <div class="lineup-body">
+          <p>Android · iOS 앱의 취약점을 AI가 자동 분석합니다</p>
+        </div>
+      </div>
+      <div class="lineup-card">
+        <div class="lineup-head">
+          <div class="lineup-name">Alienray Windows</div>
+          <div class="lineup-tag">바이너리 분석</div>
+        </div>
+        <div class="lineup-body">
+          <p>Diffuto 기반 PE 바이너리 정밀 분석으로 취약점을 탐지합니다</p>
+        </div>
+      </div>
+      <div class="lineup-card">
+        <div class="lineup-head">
+          <div class="lineup-name">Alienray IoT</div>
+          <div class="lineup-tag">펌웨어 분석</div>
+        </div>
+        <div class="lineup-body">
+          <p>Diffuto 기반 IoT 펌웨어를 자동 분석하여 보안 취약점을 식별합니다</p>
+        </div>
+      </div>
+      <div class="lineup-card">
+        <div class="lineup-head">
+          <div class="lineup-name">Alienray Code</div>
+          <div class="lineup-tag">소스코드 분석</div>
+        </div>
+        <div class="lineup-body">
+          <p>코드 레벨 취약점을 AI가 자동 탐지하고 개선안을 제시합니다</p>
+        </div>
+      </div>
+    </div>
+    <p class="lineup-note">* 전체 라인업은 순차 출시 예정입니다 — 출시 일정은 문의하세요</p>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="cta">
+  <div class="wrap">
+    <h2>AI 해커가 먼저 점검하게 하세요</h2>
+    <p>Alienray 도입 문의 및 자료 요청을 받고 있습니다.</p>
+    <div class="cta-btns">
+      <a href="#" class="btn-cta">문의하기</a>
+      <a href="#" class="btn-cta-outline">자료 요청</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <svg class="footer-logo-mark" viewBox="0 0 28 28" fill="none">
+            <rect width="28" height="28" rx="6" fill="#5B3FBF" opacity="0.12"/>
+            <path d="M8 14c0-3.3 2.7-6 6-6s6 2.7 6 6-2.7 6-6 6" stroke="#5B3FBF" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="14" cy="14" r="2.5" fill="#5B3FBF"/>
+          </svg>
+          <span class="footer-logo-name">STEALIEN</span>
+        </div>
+        <p class="footer-brand-desc">첨단 기술을 안전하게 제공하는<br>사이버 보안 전문 기업</p>
+        <div class="footer-sns">
+          <div class="footer-sns-icon">f</div>
+          <div class="footer-sns-icon">𝕏</div>
+          <div class="footer-sns-icon">▶</div>
+          <div class="footer-sns-icon">▤</div>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h5>제품</h5>
+        <a>AppSuit Premium</a>
+        <a>AppSuit Keypad</a>
+        <a>AppSuit AV</a>
+        <a>AppSuit RemoteBlock</a>
+        <a style="color:var(--teal);font-weight:500;">전체 제품 보기</a>
+      </div>
+      <div class="footer-col">
+        <h5>컨설팅</h5>
+        <a>보안 컨설팅</a>
+        <a>모의해킹 / 레드팀</a>
+        <a>AI Red Teaming</a>
+        <a style="color:var(--teal);font-weight:500;">AI 해커 기반 모의해킹</a>
+        <h5 style="margin-top:16px;">회사</h5>
+        <a>회사 소개</a>
+        <a>인증 및 수상</a>
+        <a>뉴스·보도자료</a>
+        <a>채용</a>
+      </div>
+      <div class="footer-contact">
+        <h5>연락처</h5>
+        <div class="footer-contact-group">
+          <div class="footer-contact-label">영업 문의</div>
+          <div class="footer-contact-tel">02-2088-4834</div>
+          <div class="footer-contact-email">sales@stealien.com</div>
+        </div>
+        <div class="footer-contact-group">
+          <div class="footer-contact-label">기술 지원</div>
+          <div class="footer-contact-tel">02-2088-4835</div>
+          <div class="footer-contact-email">se@stealien.com</div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copyright">COPYRIGHT © 2026 STEALIEN Inc. ALL RIGHTS RESERVED.</span>
+      <div class="footer-bottom-links">
+        <a>개인정보처리방침</a>
+        <a>이용약관</a>
+        <a>사이트맵</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
