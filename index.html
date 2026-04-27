@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alienray — AI 해커 기반 모의해킹 서비스</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   TOKENS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+:root {
+  --ink:        #0A1A14;
+  --ink-mid:    #2C4A3E;
+  --ink-mute:   #6B8C80;
+  --teal:       #1D9E75;
+  --teal-hi:    #25C490;
+  --teal-pale:  #E6F7F0;
+  --teal-dark:  #041A14;
+  --surface:    #F5F8F6;
+  --border:     rgba(29,158,117,0.12);
+  --border-mid: rgba(29,158,117,0.22);
+  --white:      #FFFFFF;
+  --font-main:  'DM Sans', sans-serif;
+  --font-mono:  'DM Mono', monospace;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   RESET & BASE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-main);
+  background: var(--white);
+  color: var(--ink);
+  font-size: 15px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+a { text-decoration: none; color: inherit; }
+img { display: block; max-width: 100%; }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   LAYOUT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.wrap { max-width: 1020px; margin: 0 auto; padding: 0 28px; }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   NAV
+━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(4,26,20,0.96);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(29,158,117,0.15);
+}
+.nav-inner {
+  max-width: 1020px; margin: 0 auto; padding: 0 28px;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 56px;
+}
+.nav-brand { display: flex; align-items: center; gap: 10px; }
+.nav-brand-logo {
+  width: 28px; height: 28px; background: var(--teal);
+  border-radius: 6px; display: flex; align-items: center; justify-content: center;
+}
+.nav-brand-logo svg { width: 16px; height: 16px; }
+.nav-brand-name { font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.85); letter-spacing: 0.03em; }
+.nav-brand-name span { color: var(--teal-hi); }
+.nav-links { display: flex; gap: 24px; }
+.nav-links a { font-size: 12px; color: rgba(255,255,255,0.45); transition: color .15s; }
+.nav-links a:hover { color: rgba(255,255,255,0.8); }
+.nav-cta {
+  background: var(--teal); color: var(--white);
+  font-size: 12px; font-weight: 500;
+  padding: 7px 18px; border-radius: 5px;
+  transition: background .15s;
+}
+.nav-cta:hover { background: var(--teal-hi); }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   SECTION FRAME
+━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.section { padding: 28px 0; }
+
+.sec-title {
+  font-size: 30px; font-weight: 500;
+  color: var(--ink); line-height: 1.25;
+  margin-bottom: 6px;
+}
+.sec-desc {
+  font-size: 14px; color: var(--ink-mute);
+  line-height: 1.75; max-width: 780px;
+  margin-bottom: 16px;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   CERT PILL
+━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.cert-pills { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+.cert-pill {
+  font-size: 11px; color: var(--ink-mid);
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 4px; padding: 5px 14px;
+  font-family: var(--font-mono);
+}
+.cert-pills-light .cert-pill {
+  background: var(--teal-pale);
+  border-color: var(--border-mid);
+  color: var(--ink-mid);
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   HERO
+━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.hero {
+  background: var(--teal-dark);
+  padding: 72px 0 56px;
+  position: relative; overflow: hidden;
+}
+.hero-bg {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  pointer-events: none;
+}
+.hero-inner {
+  position: relative; z-index: 2;
+  display: grid; grid-template-columns: 1fr 380px; gap: 60px; align-items: center;
+}
+.hero-service-tag {
+  font-family: var(--font-mono);
+  font-size: 11px; color: var(--teal-hi);
+  letter-spacing: 0.08em;
+  margin-bottom: 18px; display: flex; align-items: center; gap: 8px;
+}
+.hero-service-tag::before {
+  content: '';
+  display: inline-block; width: 6px; height: 6px; border-radius: 50%;
+  background: var(--teal); animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(1.4)} }
+.hero h1 {
+  font-size: 34px; font-weight: 500; color: var(--white);
+  line-height: 1.25; margin-bottom: 18px; letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+.hero h1 em { color: var(--teal-hi); font-style: normal; }
+.hero-sub {
+  font-size: 15px; color: rgba(255,255,255,0.45);
+  line-height: 1.8; margin-bottom: 32px; max-width: 420px;
+}
+.hero-ctas { display: flex; gap: 12px; align-items: center; }
+.btn-primary {
+  background: var(--teal); color: var(--white);
+  font-size: 13px; font-weight: 500;
+  padding: 11px 24px; border-radius: 6px;
+  display: inline-flex; align-items: center; gap: 7px;
+  transition: background .15s;
+}
+.btn-primary:hover { background: var(--teal-hi); }
+.btn-ghost {
+  font-size: 13px; color: rgba(255,255,255,0.5);
+  display: inline-flex; align-items: center; gap: 5px;
+  border-bottom: 1px solid rgba(255,255,255,0.2);
+  padding-bottom: 1px; transition: color .15s;
+}
+.btn-ghost:hover { color: var(--white); }
+
+/* Hero 그래픽 */
+.hero-graphic { position: relative; height: 300px; }
+.hero-graphic svg { width: 100%; height: 100%; }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   WHY / 문제·배경
+━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.why-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
+.why-left p { font-size: 14px; color: var(--ink-mute); line-height: 1.8; margin-bottom: 10px; }
+.why-cards { display: flex; flex-direction: column; gap: 20px; }
+.why-card {
+  display: flex; align-items: flex-start; gap: 14px;
+  padding: 0;
+}
+.why-icon {
+  width: 32px; height: 32px; border-radius: 8px;
+  background: var(--teal-pale);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; font-size: 15px;
+}
+.why-card-name { font-size: 13px; font-weight: 500; color: var(--ink); margin-bottom: 4px; }
+.why-card-desc { font-size: 12px; color: var(--ink-mute); line-height: 1.6; }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   기능 — 상단 2컬럼
+━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.func-top {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 48px;
+  align-items: stretch; margin-bottom: 20px;
+}
+
+/* 좌: 기능 탭 */
+.func-tabs {
+  display: flex; flex-direction: column;
+  justify-content: space-between; gap: 2px;
+}
+.func-tab {
+  display: flex; align-items: flex-start; gap: 14px;
+  padding: 14px 16px; flex: 1;
+  border-radius: 8px; cursor: pointer;
+  transition: background .12s;
+  border: 1px solid transparent;
+}
+.func-tab:hover { background: rgba(29,158,117,0.04); }
+.func-tab.active {
+  background: var(--white);
+  border-color: var(--border-mid);
+  box-shadow: 0 1px 8px rgba(29,158,117,0.06);
+}
+.func-tab-bar {
+  width: 3px; flex-shrink: 0;
+  border-radius: 2px; background: var(--border-mid);
+  margin-top: 3px; align-self: stretch;
+  transition: background .12s;
+}
+.func-tab.active .func-tab-bar { background: var(--teal); }
+.func-tab-name { font-size: 13px; font-weight: 500; color: var(--ink); margin-bottom: 3px; }
+.func-tab-tags { display: flex; flex-wrap: wrap; gap: 4px; }
+.func-tag { font-size: 10px; color: var(--ink-mute); }
+.func-tag::after { content: ' ·'; color: var(--border-mid); }
+.func-tag:last-child::after { content: ''; }
+
+/* 우: 기술 설명 박스 */
+.func-right-box {
+  padding: 0;
+  display: flex; flex-direction: column; gap: 20px;
+}
+.func-right-title {
+  font-family: var(--font-mono); font-size: 10px;
+  color: var(--teal); letter-spacing: 0.1em;
+  text-transform: uppercase; margin-bottom: 6px;
+}
+.func-right-desc { font-size: 12px; color: var(--ink-mute); line-height: 1.7; }
+.func-right-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.func-chip {
+  font-size: 10px; font-family: var(--font-mono);
+  color: var(--ink-mid);
+  background: var(--teal-pale);
+  border: 1px solid var(--border-mid);
+  border-radius: 3px; padding: 3px 10px;
+}
+.func-right-note { font-size: 10px; color: var(--ink-mute); line-height: 1.6; }
+
+/* 기능 — 하단 2컬럼 (OS 카드) */
+.func-bottom {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
+  align-items: stretch;
+}
+.os-card {
+  border-radius: 0; overflow: hidden;
+  border: none;
+  border-top: 2px solid var(--teal);
+  display: flex; flex-direction: column;
+  padding-top: 16px;
+}
+.os-card-head {
+  padding: 0 0 12px 0;
+  border-bottom: none;
+}
+.os-card-tag {
+  font-family: var(--font-mono); font-size: 9px;
+  color: var(--teal); text-transform: uppercase;
+  letter-spacing: 0.1em; margin-bottom: 2px; display: block;
+}
+.os-card-title { font-size: 13px; font-weight: 500; color: var(--ink-mid); }
+.os-card-body {
+  padding: 0;
+  flex: 1; display: flex; flex-direction: column;
+}
+.os-item {
+  display: flex; align-items: flex-start; gap: 7px;
+  font-size: 11px; color: var(--ink-mute);
+  line-height: 1.55; margin-bottom: 6px;
+}
+.os-item::before { content: '—'; color: var(--teal); flex-shrink: 0; font-size: 10px; margin-top: 1px; }
+.os-tip {
+  margin-top: auto; padding-top: 12px;
+  border-top: 1px solid var(--border);
+  font-size: 10px; color: var(--ink-mute); font-style: italic; line-height: 1.6;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   서비스 방식 (FLOW)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.flow-grid {
+  display: grid; grid-template-columns: repeat(4,1fr);
+  gap: 1px; background: var(--border);
+  border: 1px solid var(--border); border-radius: 10px; overflow: hidden;
+}
+.flow-item { background: var(--white); padding: 20px 16px; }
+.flow-num {
+  font-family: var(--font-mono); font-size: 11px;
+  color: var(--teal); margin-bottom: 8px; display: block;
+}
+.flow-name { font-size: 13px; font-weight: 500; color: var(--ink); margin-bottom: 6px; }
+.flow-desc { font-size: 11px; color: var(--ink-mute); line-height: 1.65; }
+.flow-note { font-size: 11px; color: var(--ink-mute); margin-top: 14px; font-style: italic; }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   브랜드 소개
+━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.brand-box {
+  padding: 40px 0;
+  text-align: center;
+}
+.brand-name { font-size: 22px; font-weight: 500; color: var(--ink); margin-bottom: 12px; }
+.brand-name span { color: var(--teal); }
+.brand-desc { font-size: 14px; color: var(--ink-mute); line-height: 1.8; margin-bottom: 12px; }
+.brand-note { font-size: 11px; color: var(--ink-mute); }
+.brand-note strong { color: var(--teal); }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   차별점
+━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.diff-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
+.diff-list { display: flex; flex-direction: column; gap: 0; }
+.diff-item {
+  display: flex; align-items: flex-start; gap: 14px;
+  padding: 16px 0;
+  /* 구분선 없음 */
+}
+.diff-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--teal); flex-shrink: 0; margin-top: 6px; }
+.diff-name { font-size: 13px; font-weight: 500; color: var(--ink); margin-bottom: 3px; }
+.diff-desc { font-size: 12px; color: var(--ink-mute); line-height: 1.6; }
+
+/* 우측: 포지셔닝·특징 */
+.diff-right { display: flex; flex-direction: column; gap: 24px; }
+.diff-box {
+  padding: 0;
+}
+.diff-box-title {
+  font-family: var(--font-mono); font-size: 10px;
+  color: var(--teal); text-transform: uppercase;
+  letter-spacing: 0.08em; margin-bottom: 10px;
+}
+.diff-box-row {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 12px; color: var(--ink-mute); margin-bottom: 6px;
+  line-height: 1.5;
+}
+.diff-box-row:last-child { margin-bottom: 0; }
+.diff-box-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--teal); flex-shrink: 0; }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   라인업
+━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.lineup-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; }
+.lineup-card { border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+.lineup-head { padding: 14px 16px; border-bottom: 1px solid var(--border); }
+.lineup-name { font-size: 14px; font-weight: 500; color: var(--ink); margin-bottom: 3px; }
+.lineup-tag { font-family: var(--font-mono); font-size: 10px; color: var(--teal); }
+.lineup-body { padding: 14px 16px; }
+.lineup-body p { font-size: 12px; color: var(--ink-mute); line-height: 1.65; }
+.lineup-note { font-size: 11px; color: var(--ink-mute); margin-top: 18px; text-align: center; }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   FAQ
+━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.faq-list { display: flex; flex-direction: column; gap: 0; max-width: 700px; }
+.faq-item { overflow: hidden; }
+.faq-q {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 0; cursor: pointer; gap: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.faq-item.open .faq-q { border-bottom: none; }
+.faq-q-text { font-size: 13px; color: var(--ink); font-weight: 500; line-height: 1.5; }
+.faq-toggle {
+  width: 20px; height: 20px; border-radius: 50%;
+  background: var(--white); border: 1px solid var(--border); flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; color: var(--teal); transition: background .15s;
+  font-weight: 300; line-height: 1;
+}
+.faq-item.open .faq-toggle { background: var(--teal); color: var(--white); }
+.faq-a {
+  font-size: 13px; color: var(--ink-mute); line-height: 1.75;
+  padding-bottom: 16px; display: none;
+}
+.faq-item.open .faq-a { display: block; }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   CTA
+━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.cta-section {
+  background: var(--teal-pale); padding: 56px 0; text-align: center;
+  border-top: 1px solid var(--border-mid);
+}
+.cta-section h2 { font-size: 28px; font-weight: 500; color: var(--ink); margin-bottom: 10px; }
+.cta-section p { font-size: 14px; color: var(--ink-mid); margin-bottom: 28px; line-height: 1.75; }
+.cta-btns { display: flex; justify-content: center; gap: 12px; }
+.btn-cta { background: var(--teal); color: var(--white); font-size: 13px; font-weight: 500; padding: 12px 28px; border-radius: 6px; transition: background .15s; }
+.btn-cta:hover { background: var(--teal-hi); }
+.btn-cta-outline { border: 1px solid var(--border-mid); color: var(--ink-mid); font-size: 13px; padding: 12px 28px; border-radius: 6px; transition: border-color .15s, color .15s; }
+.btn-cta-outline:hover { border-color: var(--teal); color: var(--teal); }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   FOOTER
+━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.footer { background: #F7F8F7; padding: 48px 0 0; border-top: 1px solid #E4E9E6; }
+.footer-inner { display: grid; grid-template-columns: 220px 160px 180px 260px; gap: 0; }
+.footer-brand { padding-right: 40px; }
+.footer-logo { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+.footer-logo-mark { width: 28px; height: 28px; }
+.footer-logo-name { font-size: 15px; font-weight: 700; color: #5B3FBF; letter-spacing: 0.02em; }
+.footer-brand-desc { font-size: 12px; color: #6B7C74; line-height: 1.7; margin-bottom: 18px; }
+.footer-sns { display: flex; gap: 8px; }
+.footer-sns-icon { width: 30px; height: 30px; border-radius: 4px; border: 1px solid #D8DDD9; background: var(--white); display: flex; align-items: center; justify-content: center; font-size: 12px; color: #5B7068; cursor: pointer; }
+.footer-col { padding: 0 20px; }
+.footer-col h5 { font-size: 13px; font-weight: 600; color: #1A2E26; margin-bottom: 14px; }
+.footer-col a { display: block; font-size: 13px; color: #5B7068; margin-bottom: 10px; }
+.footer-col a:hover { color: var(--teal); }
+.footer-contact { padding-left: 20px; }
+.footer-contact h5 { font-size: 13px; font-weight: 600; color: #1A2E26; margin-bottom: 14px; }
+.footer-contact-group { margin-bottom: 14px; }
+.footer-contact-label { font-size: 12px; font-weight: 600; color: #1A2E26; margin-bottom: 3px; }
+.footer-contact-tel { font-size: 12px; color: #5B7068; margin-bottom: 2px; }
+.footer-contact-email { font-size: 12px; color: var(--teal); }
+.footer-bottom { border-top: 1px solid #D8DDD9; margin-top: 36px; padding: 16px 0; display: flex; justify-content: space-between; align-items: center; }
+.footer-copyright { font-size: 11px; color: #8FA89C; }
+.footer-bottom-links { display: flex; gap: 16px; }
+.footer-bottom-links a { font-size: 11px; color: #5B7068; }
+.footer-bottom-links a:hover { color: var(--teal); }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="nav-brand">
+      <div class="nav-brand-logo">
+        <svg viewBox="0 0 16 16" fill="none"><path d="M8 2L2 5v4c0 3 2.5 5.2 6 6 3.5-.8 6-3 6-6V5L8 2z" fill="white" opacity=".9"/></svg>
+      </div>
+      <span class="nav-brand-name">STEALIEN <span>Alienray</span></span>
+    </div>
+    <div class="nav-links">
+      <a href="#why">서비스 개요</a>
+      <a href="#features">기능</a>
+      <a href="#process">서비스 방식</a>
+      <a href="#diff">차별점</a>
+      <a href="#lineup">라인업</a>
+      <a href="#faq">FAQ</a>
+    </div>
+    <a href="#cta" class="nav-cta">도입 상담</a>
+  </div>
+</nav>
+
+<!-- ① HERO -->
+<section class="hero">
+  <svg class="hero-bg" viewBox="0 0 1200 400" preserveAspectRatio="xMaxYMid slice" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="1200" cy="200" r="520" fill="none" stroke="rgba(29,158,117,0.06)" stroke-width="1"/>
+    <circle cx="1200" cy="200" r="380" fill="none" stroke="rgba(29,158,117,0.08)" stroke-width="0.8"/>
+    <circle cx="1200" cy="200" r="250" fill="none" stroke="rgba(29,158,117,0.10)" stroke-width="0.8"/>
+    <circle cx="1200" cy="200" r="140" fill="rgba(29,158,117,0.04)" stroke="#1D9E75" stroke-width="0.8"/>
+    <circle cx="1200" cy="200" r="60"  fill="rgba(29,158,117,0.10)" stroke="#1D9E75" stroke-width="1"/>
+    <circle cx="1200" cy="200" r="22"  fill="rgba(29,158,117,0.20)" stroke="#1D9E75" stroke-width="1.2"/>
+    <circle cx="1200" cy="200" r="8"   fill="#1D9E75"/>
+    <line x1="1200" y1="200" x2="0"   y2="0"   stroke="#1D9E75" stroke-width="0.6" stroke-dasharray="6 5" opacity="0.3"/>
+    <line x1="1200" y1="200" x2="0"   y2="60"  stroke="#1D9E75" stroke-width="0.7" stroke-dasharray="6 5" opacity="0.35"/>
+    <line x1="1200" y1="200" x2="0"   y2="130" stroke="#1D9E75" stroke-width="0.8" stroke-dasharray="6 5" opacity="0.42"/>
+    <line x1="1200" y1="200" x2="0"   y2="200" stroke="#1D9E75" stroke-width="1.0" stroke-dasharray="6 5" opacity="0.5"/>
+    <line x1="1200" y1="200" x2="0"   y2="270" stroke="#1D9E75" stroke-width="0.8" stroke-dasharray="6 5" opacity="0.42"/>
+    <line x1="1200" y1="200" x2="0"   y2="340" stroke="#1D9E75" stroke-width="0.7" stroke-dasharray="6 5" opacity="0.35"/>
+    <line x1="1200" y1="200" x2="0"   y2="400" stroke="#1D9E75" stroke-width="0.6" stroke-dasharray="6 5" opacity="0.3"/>
+    <line x1="1200" y1="200" x2="200" y2="0"   stroke="#1D9E75" stroke-width="0.6" stroke-dasharray="5 5" opacity="0.28"/>
+    <line x1="1200" y1="200" x2="200" y2="400" stroke="#1D9E75" stroke-width="0.6" stroke-dasharray="5 5" opacity="0.28"/>
+    <line x1="1200" y1="200" x2="500" y2="0"   stroke="#1D9E75" stroke-width="0.5" stroke-dasharray="5 5" opacity="0.22"/>
+    <line x1="1200" y1="200" x2="500" y2="400" stroke="#1D9E75" stroke-width="0.5" stroke-dasharray="5 5" opacity="0.22"/>
+    <circle cx="0"   cy="0"   r="3"   fill="#1D9E75" opacity="0.35"/>
+    <circle cx="0"   cy="60"  r="3.5" fill="#1D9E75" opacity="0.4"/>
+    <circle cx="0"   cy="130" r="4"   fill="#1D9E75" opacity="0.5"/>
+    <circle cx="0"   cy="200" r="4.5" fill="#1D9E75" opacity="0.55"/>
+    <circle cx="0"   cy="270" r="4"   fill="#1D9E75" opacity="0.5"/>
+    <circle cx="0"   cy="340" r="3.5" fill="#1D9E75" opacity="0.4"/>
+    <circle cx="0"   cy="400" r="3"   fill="#1D9E75" opacity="0.35"/>
+  </svg>
+  <div class="wrap">
+    <div class="hero-inner">
+      <div>
+        <span class="hero-service-tag">AI Hacker-Based Pentest Service</span>
+        <h1>AI 해커가 광범위한 자산을 자동 점검하고<br><em>화이트 해커가 정밀하게 검증합니다</em></h1>
+        <p class="hero-sub">AI가 24시간 대규모 자산을 자동 탐색하고,<br>화이트해커가 직접 검증해 오탐 없는 결과를 제공합니다.</p>
+        <div class="hero-ctas">
+          <a href="#cta" class="btn-primary">&#9654; 문의하기</a>
+          <a href="#cta" class="btn-ghost">자료 요청 →</a>
+        </div>
+      </div>
+      <div class="hero-graphic">
+        <!-- 우측 그래픽: AI 스캔 → 검증 구조 시각화 -->
+        <svg viewBox="0 0 340 280" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- 배경 원형 망 -->
+          <circle cx="170" cy="140" r="110" stroke="rgba(29,158,117,0.10)" stroke-width="1"/>
+          <circle cx="170" cy="140" r="78"  stroke="rgba(29,158,117,0.15)" stroke-width="1"/>
+          <circle cx="170" cy="140" r="46"  fill="rgba(29,158,117,0.07)" stroke="#1D9E75" stroke-width="1"/>
+          <!-- 중심 노드 -->
+          <circle cx="170" cy="140" r="18" fill="rgba(29,158,117,0.18)" stroke="#1D9E75" stroke-width="1.2"/>
+          <text x="170" y="136" text-anchor="middle" font-size="8" fill="#5DCAA5" font-family="DM Mono">AI</text>
+          <text x="170" y="147" text-anchor="middle" font-size="8" fill="#5DCAA5" font-family="DM Mono">SCAN</text>
+          <!-- 자산 노드 6개 -->
+          <circle cx="170" cy="40"  r="14" fill="rgba(29,158,117,0.12)" stroke="#1D9E75" stroke-width="0.8"/>
+          <text x="170" y="44" text-anchor="middle" font-size="7" fill="#5DCAA5" font-family="DM Mono">WEB</text>
+          <circle cx="254" cy="88"  r="14" fill="rgba(29,158,117,0.12)" stroke="#1D9E75" stroke-width="0.8"/>
+          <text x="254" y="92" text-anchor="middle" font-size="7" fill="#5DCAA5" font-family="DM Mono">MOB</text>
+          <circle cx="254" cy="192" r="14" fill="rgba(29,158,117,0.12)" stroke="#1D9E75" stroke-width="0.8"/>
+          <text x="254" y="196" text-anchor="middle" font-size="7" fill="#5DCAA5" font-family="DM Mono">WIN</text>
+          <circle cx="170" cy="240" r="14" fill="rgba(29,158,117,0.12)" stroke="#1D9E75" stroke-width="0.8"/>
+          <text x="170" y="244" text-anchor="middle" font-size="7" fill="#5DCAA5" font-family="DM Mono">IoT</text>
+          <circle cx="86"  cy="192" r="14" fill="rgba(29,158,117,0.12)" stroke="#1D9E75" stroke-width="0.8"/>
+          <text x="86"  y="196" text-anchor="middle" font-size="7" fill="#5DCAA5" font-family="DM Mono">CODE</text>
+          <circle cx="86"  cy="88"  r="14" fill="rgba(29,158,117,0.12)" stroke="#1D9E75" stroke-width="0.8"/>
+          <text x="86"  y="92"  text-anchor="middle" font-size="7" fill="#5DCAA5" font-family="DM Mono">SURF</text>
+          <!-- 연결선 -->
+          <line x1="170" y1="122" x2="170" y2="54"  stroke="#1D9E75" stroke-width="0.7" stroke-dasharray="4 4" opacity="0.5"/>
+          <line x1="186" y1="129" x2="241" y2="99"  stroke="#1D9E75" stroke-width="0.7" stroke-dasharray="4 4" opacity="0.5"/>
+          <line x1="186" y1="151" x2="241" y2="181" stroke="#1D9E75" stroke-width="0.7" stroke-dasharray="4 4" opacity="0.5"/>
+          <line x1="170" y1="158" x2="170" y2="226" stroke="#1D9E75" stroke-width="0.7" stroke-dasharray="4 4" opacity="0.5"/>
+          <line x1="154" y1="151" x2="99"  y2="181" stroke="#1D9E75" stroke-width="0.7" stroke-dasharray="4 4" opacity="0.5"/>
+          <line x1="154" y1="129" x2="99"  y2="99"  stroke="#1D9E75" stroke-width="0.7" stroke-dasharray="4 4" opacity="0.5"/>
+          <!-- 위협 신호 (붉은 점) -->
+          <circle cx="42" cy="140" r="4" fill="#D94F3D" opacity="0.75">
+            <animate attributeName="opacity" values="0.75;0.2;0.75" dur="2.1s" repeatCount="indefinite"/>
+          </circle>
+          <circle cx="300" cy="60" r="3.5" fill="#D94F3D" opacity="0.6">
+            <animate attributeName="opacity" values="0.6;0.15;0.6" dur="1.7s" repeatCount="indefinite"/>
+          </circle>
+          <circle cx="290" cy="230" r="4" fill="#D94F3D" opacity="0.65">
+            <animate attributeName="opacity" values="0.65;0.2;0.65" dur="2.4s" repeatCount="indefinite"/>
+          </circle>
+          <!-- 위협 → 차단 -->
+          <line x1="46" y1="140" x2="70" y2="140" stroke="#D94F3D" stroke-width="0.5" stroke-dasharray="3 3" opacity="0.35"/>
+          <line x1="297" y1="63"  x2="265" y2="95" stroke="#D94F3D" stroke-width="0.5" stroke-dasharray="3 3" opacity="0.3"/>
+          <line x1="287" y1="227" x2="264" y2="206" stroke="#D94F3D" stroke-width="0.5" stroke-dasharray="3 3" opacity="0.3"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ② 문제/배경 -->
+<section class="section" id="why">
+  <div class="wrap">
+    <!-- cert-pill: 라이트 섹션 → cert-pills-light 적용 -->
+    <div class="cert-pills cert-pills-light">
+      <span class="cert-pill">AI 해커 기반</span>
+      <span class="cert-pill">Human in the Loop</span>
+      <span class="cert-pill">6개 영역 커버</span>
+      <span class="cert-pill">자체 기술 Diffuto</span>
+    </div>
+    <div class="sec-title">공격자는 이미 AI로 무장했습니다</div>
+    <p class="sec-desc">기존 모의해킹은 특정 툴과 화이트해커가 정해진 범위를 수동으로 점검하는 방식이었습니다.<br>그러나 공격자들은 AI를 이용해 방어 측이 미처 살피지 못한 자산 전체를 24시간 자동 탐색합니다.<br>대규모 정보 자산을 보유한 기업·금융기관·공공기관은 지금 이 순간에도 심각한 위험에 노출돼 있습니다.</p>
+
+    <!-- 수치 강조 바 -->
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border-radius:10px;overflow:hidden;margin-bottom:24px;">
+      <div style="background:var(--white);padding:22px 24px;">
+        <div style="font-size:28px;font-weight:500;color:var(--ink);line-height:1;">2,383<span style="font-size:13px;color:var(--teal);margin-left:4px;">건</span></div>
+        <div style="font-size:11px;color:var(--ink-mute);margin-top:5px;line-height:1.5;">2025년 국내 침해사고 신고 건수<br><span style="color:var(--teal);font-family:var(--font-mono);font-size:10px;">전년 대비 +26.3%</span></div>
+      </div>
+      <div style="background:var(--white);padding:22px 24px;">
+        <div style="font-size:28px;font-weight:500;color:var(--ink);line-height:1;">90<span style="font-size:13px;color:var(--teal);margin-left:4px;">%</span></div>
+        <div style="font-size:11px;color:var(--ink-mute);margin-top:5px;line-height:1.5;">5년 전보다 사이버 리스크 관리가<br><span style="color:var(--teal);font-family:var(--font-mono);font-size:10px;">어려워졌다고 응답한 보안 리더 비율</span></div>
+      </div>
+      <div style="background:var(--white);padding:22px 24px;">
+        <div style="font-size:28px;font-weight:500;color:var(--ink);line-height:1;">AI<span style="font-size:13px;color:var(--teal);margin-left:6px;">자동화 공격</span></div>
+        <div style="font-size:11px;color:var(--ink-mute);margin-top:5px;line-height:1.5;">취약점 자동 탐지·권한 탈취를 결합한<br><span style="color:var(--teal);font-family:var(--font-mono);font-size:10px;">복합 공격이 현실화</span></div>
+      </div>
+    </div>
+
+    <div class="why-layout">
+      <div class="why-left">
+        <p>기존 모의해킹은 정해진 일정에 정해진 범위만 점검하는 단발성 서비스였습니다.<br>공격자가 AI로 공격 표면 전체를 실시간 스캔하는 지금, 연 1회 수동 점검은 사실상 무방비와 다름없습니다.</p>
+        <p>Alienray는 AI 해커가 먼저 움직이고,<br>고급 화이트해커 전문가가 결과를 정밀 검증합니다.<br>방어 측도 AI로 대응해야 할 때입니다.</p>
+      </div>
+      <div class="why-cards">
+        <div class="why-card">
+          <div class="why-icon">⚡</div>
+          <div>
+            <div class="why-card-name">AI 기반 자동화 — 공격자와 같은 속도로</div>
+            <div class="why-card-desc">AI가 24시간 대규모 자산을 탐색하고 공격 시뮬레이션을 수행합니다.<br>공격자가 먼저 발견하기 전에 취약점을 찾아냅니다.</div>
+          </div>
+        </div>
+        <div class="why-card">
+          <div class="why-icon">🔁</div>
+          <div>
+            <div class="why-card-name">단발이 아닌 상시 점검</div>
+            <div class="why-card-desc">연 1~2회 수동 점검으로는 매일 새롭게 등장하는 취약점을 막을 수 없습니다.<br>반복·연속적 검증으로 공격 창을 최소화합니다.</div>
+          </div>
+        </div>
+        <div class="why-card">
+          <div class="why-icon">👁</div>
+          <div>
+            <div class="why-card-name">Human in the Loop — 전문가 검증으로 정확도 보장</div>
+            <div class="why-card-desc">AI가 수집한 취약점은 고급 화이트해커가 직접 진위·영향도를 확인합니다.<br>오탐 없이 실질적 위험만을 정확하게 보고합니다.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ③ 기능 -->
+<section class="section" id="features">
+  <div class="wrap">
+    <div class="sec-title">AI 엔진이 커버하는 6개 점검 영역</div>
+    <p class="sec-desc">각 영역별 특화된 AI 엔진으로 공격 표면 전체를 자동 점검합니다.</p>
+
+    <!-- 상단 2컬럼: 좌 기능탭 / 우 기술 박스 -->
+    <div class="func-top">
+      <div class="func-tabs">
+        <div class="func-tab active">
+          <div class="func-tab-bar"></div>
+          <div>
+            <div class="func-tab-name">공격 표면 관리</div>
+            <div class="func-tab-tags">
+              <span class="func-tag">외부 노출 자산 탐색</span>
+              <span class="func-tag">자산 자동 분류</span>
+              <span class="func-tag">공격 표면 가시화</span>
+            </div>
+          </div>
+        </div>
+        <div class="func-tab">
+          <div class="func-tab-bar"></div>
+          <div>
+            <div class="func-tab-name">웹 모의해킹</div>
+            <div class="func-tab-tags">
+              <span class="func-tag">웹 취약점 자동 탐지</span>
+              <span class="func-tag">OWASP Top 10</span>
+              <span class="func-tag">인증·인가 취약점</span>
+            </div>
+          </div>
+        </div>
+        <div class="func-tab">
+          <div class="func-tab-bar"></div>
+          <div>
+            <div class="func-tab-name">모바일 앱 보안</div>
+            <div class="func-tab-tags">
+              <span class="func-tag">Android 자동 분석</span>
+              <span class="func-tag">iOS 자동 분석</span>
+              <span class="func-tag">취약점 우선순위 분류</span>
+            </div>
+          </div>
+        </div>
+        <div class="func-tab">
+          <div class="func-tab-bar"></div>
+          <div>
+            <div class="func-tab-name">소스코드 분석</div>
+            <div class="func-tab-tags">
+              <span class="func-tag">코드 레벨 취약점 탐지</span>
+              <span class="func-tag">개선안 자동 제시</span>
+              <span class="func-tag">CI/CD 연동</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="func-right-box">
+        <div>
+          <div class="func-right-title">AI + Expert 구조</div>
+          <p class="func-right-desc">AI가 광범위하게 탐색·공격하고,<br>고급 화이트해커가 취약점을 정밀 검증하는 이중 구조로 오탐을 최소화합니다.</p>
+        </div>
+        <div>
+          <div class="func-right-title">Diffuto 기반 분석</div>
+          <p class="func-right-desc">Windows PE 바이너리와 IoT 펌웨어는 스틸리언 자체 기술 Diffuto로 정밀 분석합니다.</p>
+          <div class="func-right-chips" style="margin-top:10px">
+            <span class="func-chip">PE 바이너리</span>
+            <span class="func-chip">IoT 펌웨어</span>
+            <span class="func-chip">취약점 자동 식별</span>
+          </div>
+        </div>
+        <p class="func-right-note">전문가 검증 포함 최종 리포트에는 위험도·재현 방법·개선안이 포함됩니다.</p>
+      </div>
+    </div>
+
+    <!-- 하단 2컬럼: Android / iOS 카드 -->
+    <div class="func-bottom">
+      <div class="os-card">
+        <div class="os-card-head">
+          <span class="os-card-tag">Diffuto 기반</span>
+          <div class="os-card-title">Windows · PE 바이너리 분석</div>
+        </div>
+        <div class="os-card-body">
+          <div class="os-item">PE 바이너리 정밀 분석으로 취약점 탐지</div>
+          <div class="os-item">메모리 손상, 논리 결함 등 코드 레벨 이슈 식별</div>
+          <div class="os-item">공격자 관점의 익스플로잇 가능성 평가</div>
+          <div class="os-item">위험도·재현 방법·개선안 포함 리포트 제공</div>
+          <p class="os-tip">* Alienray Windows는 스틸리언 자체 기술 Diffuto 기반으로 수행됩니다.</p>
+        </div>
+      </div>
+      <div class="os-card">
+        <div class="os-card-head">
+          <span class="os-card-tag">Diffuto 기반</span>
+          <div class="os-card-title">IoT · 펌웨어 분석</div>
+        </div>
+        <div class="os-card-body">
+          <div class="os-item">IoT 펌웨어 자동 분석으로 보안 취약점 식별</div>
+          <div class="os-item">하드코딩된 자격증명·백도어 탐지</div>
+          <div class="os-item">암호화 취약점 및 통신 프로토콜 점검</div>
+          <div class="os-item">제조사 대응 가이드 포함 결과 제공</div>
+          <p class="os-tip">* Alienray IoT는 스틸리언 자체 기술 Diffuto 기반으로 수행됩니다.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ④ 서비스 방식 -->
+<section class="section" id="process">
+  <div class="wrap">
+    <div class="sec-title">AI와 전문가가 함께 움직이는 구조</div>
+    <p class="sec-desc">4단계 프로세스로 빠짐없이 검증합니다.</p>
+    <div class="flow-grid">
+      <div class="flow-item">
+        <span class="flow-num">01</span>
+        <div class="flow-name">AI 탐색 · 공격</div>
+        <div class="flow-desc">AI가 자동으로 자산을 스캔하고 공격 시뮬레이션 수행</div>
+      </div>
+      <div class="flow-item">
+        <span class="flow-num">02</span>
+        <div class="flow-name">취약점 수집</div>
+        <div class="flow-desc">발견된 취약점을 우선순위별로 분류·수집</div>
+      </div>
+      <div class="flow-item">
+        <span class="flow-num">03</span>
+        <div class="flow-name">전문가 검증</div>
+        <div class="flow-desc">고급 화이트해커가 진위·영향도를 직접 확인</div>
+      </div>
+      <div class="flow-item">
+        <span class="flow-num">04</span>
+        <div class="flow-name">리포트 제공</div>
+        <div class="flow-desc">위험도·재현 방법·개선안 포함 최종 보고서 제공</div>
+      </div>
+    </div>
+    <p class="flow-note" style="margin-top:14px;">* 추후 인포그래픽 이미지로 교체 가능</p>
+  </div>
+</section>
+
+<!-- Alienray 브랜드 소개 -->
+<section class="section" id="brand">
+  <div class="wrap">
+    <div class="brand-box">
+      <div class="brand-name"><span>Alienray</span> — AI 해커 기술 브랜드</div>
+      <p class="brand-desc">Alienray는 스틸리언이 개발한 AI 해커 기반 보안 점검 라인업입니다.<br>각 영역별 특화된 AI 엔진이 공격자 관점에서 자산을 분석하고,<br>자동화된 탐색과 전문가 검증을 결합해 기존 모의해킹의 한계를 넘습니다.</p>
+      <p class="brand-note">* Alienray Windows · IoT는 스틸리언 자체 기술 <strong>Diffuto</strong> 기반으로 수행됩니다.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ⑤ 차별점 -->
+<section class="section" id="diff">
+  <div class="wrap">
+    <div class="sec-title">검증된 기술력, AI가 먼저 움직입니다</div>
+    <p class="sec-desc">스틸리언의 자체 기술로 구현된 Alienray가 기존 모의해킹과 다른 이유입니다.</p>
+    <div class="diff-layout">
+      <div class="diff-list">
+        <div class="diff-item">
+          <div class="diff-dot"></div>
+          <div>
+            <div class="diff-name">AI 자동화 — 범위 제약 없는 점검</div>
+            <div class="diff-desc">수동 점검의 시간·범위 한계를 AI로 극복합니다.<br>24시간 대규모 자산을 탐색하고 공격 시뮬레이션을 수행합니다.</div>
+          </div>
+        </div>
+        <div class="diff-item">
+          <div class="diff-dot"></div>
+          <div>
+            <div class="diff-name">Human in the Loop — 전문가 정밀 검증</div>
+            <div class="diff-desc">AI가 수집한 결과를 고급 화이트해커가 직접 검증합니다.<br>오탐을 최소화하고 실질적인 위험도를 정확히 평가합니다.</div>
+          </div>
+        </div>
+        <div class="diff-item">
+          <div class="diff-dot"></div>
+          <div>
+            <div class="diff-name">자체 기술 Diffuto — 바이너리·펌웨어 특화</div>
+            <div class="diff-desc">스틸리언이 독자 개발한 Diffuto로 PE 바이너리와 IoT 펌웨어를 정밀 분석합니다.<br>외부 솔루션에 의존하지 않는 독립적인 분석 역량을 보유합니다.</div>
+          </div>
+        </div>
+        <div class="diff-item">
+          <div class="diff-dot"></div>
+          <div>
+            <div class="diff-name">6개 영역 통합 커버</div>
+            <div class="diff-desc">공격 표면 관리, 웹, 모바일, Windows, IoT, 소스코드를<br>단일 서비스로 통합 점검합니다.</div>
+          </div>
+        </div>
+      </div>
+      <div class="diff-right">
+        <div class="diff-box">
+          <div class="diff-box-title">기존 모의해킹 vs Alienray</div>
+          <div class="diff-box-row"><div class="diff-box-dot"></div>기존: 사람 중심 수동 점검 → 시간·범위 제한</div>
+          <div class="diff-box-row"><div class="diff-box-dot"></div>Alienray: AI 자동화로 대규모 자산 상시 점검</div>
+          <div class="diff-box-row"><div class="diff-box-dot"></div>기존: 단발성 프로젝트 방식</div>
+          <div class="diff-box-row"><div class="diff-box-dot"></div>Alienray: 반복·연속적 검증으로 상시 취약점 탐지</div>
+        </div>
+        <div class="diff-box">
+          <div class="diff-box-title">커버 영역</div>
+          <div class="diff-box-row"><div class="diff-box-dot"></div>Alienray Surface — 공격 표면 관리</div>
+          <div class="diff-box-row"><div class="diff-box-dot"></div>Alienray Web — 웹 모의해킹</div>
+          <div class="diff-box-row"><div class="diff-box-dot"></div>Alienray Mobile — 모바일 앱 보안</div>
+          <div class="diff-box-row"><div class="diff-box-dot"></div>Alienray Windows — PE 바이너리 분석 (Diffuto)</div>
+          <div class="diff-box-row"><div class="diff-box-dot"></div>Alienray IoT — 펌웨어 분석 (Diffuto)</div>
+          <div class="diff-box-row"><div class="diff-box-dot"></div>Alienray Code — 소스코드 분석</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 라인업 -->
+<section class="section" id="lineup">
+  <div class="wrap">
+    <div class="sec-title">6개 영역, AI가 동시에 점검합니다</div>
+    <p class="sec-desc">각 영역별 특화된 AI 엔진으로 공격 표면 전체를 커버합니다.</p>
+    <div class="lineup-grid">
+      <div class="lineup-card">
+        <div class="lineup-head">
+          <div class="lineup-name">Alienray Surface</div>
+          <div class="lineup-tag">공격 표면 관리</div>
+        </div>
+        <div class="lineup-body">
+          <p>외부 노출 자산을 AI가 자동 탐색·분류하여 공격 표면을 가시화합니다</p>
+        </div>
+      </div>
+      <div class="lineup-card">
+        <div class="lineup-head">
+          <div class="lineup-name">Alienray Web</div>
+          <div class="lineup-tag">웹 모의해킹</div>
+        </div>
+        <div class="lineup-body">
+          <p>웹 서비스 전반의 취약점을 AI가 자동 탐지합니다</p>
+        </div>
+      </div>
+      <div class="lineup-card">
+        <div class="lineup-head">
+          <div class="lineup-name">Alienray Mobile</div>
+          <div class="lineup-tag">모바일 앱 보안</div>
+        </div>
+        <div class="lineup-body">
+          <p>Android · iOS 앱의 취약점을 AI가 자동 분석합니다</p>
+        </div>
+      </div>
+      <div class="lineup-card">
+        <div class="lineup-head">
+          <div class="lineup-name">Alienray Windows</div>
+          <div class="lineup-tag">바이너리 분석</div>
+        </div>
+        <div class="lineup-body">
+          <p>Diffuto 기반 PE 바이너리 정밀 분석으로 취약점을 탐지합니다</p>
+        </div>
+      </div>
+      <div class="lineup-card">
+        <div class="lineup-head">
+          <div class="lineup-name">Alienray IoT</div>
+          <div class="lineup-tag">펌웨어 분석</div>
+        </div>
+        <div class="lineup-body">
+          <p>Diffuto 기반 IoT 펌웨어를 자동 분석하여 보안 취약점을 식별합니다</p>
+        </div>
+      </div>
+      <div class="lineup-card">
+        <div class="lineup-head">
+          <div class="lineup-name">Alienray Code</div>
+          <div class="lineup-tag">소스코드 분석</div>
+        </div>
+        <div class="lineup-body">
+          <p>코드 레벨 취약점을 AI가 자동 탐지하고 개선안을 제시합니다</p>
+        </div>
+      </div>
+    </div>
+    <p class="lineup-note">* 전체 라인업은 순차 출시 예정입니다 — 출시 일정은 문의하세요</p>
+  </div>
+</section>
+
+<!-- ⑨ FAQ -->
+<section class="section" id="faq">
+  <div class="wrap">
+    <div class="sec-title">자주 묻는 질문</div>
+    <p class="sec-desc">서비스 범위, 결과물, 도입 방식에 대해 자주 묻는 내용을 정리했습니다.</p>
+    <div class="faq-list">
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          <span class="faq-q-text">기존 모의해킹 서비스와 어떻게 다른가요?</span>
+          <div class="faq-toggle">+</div>
+        </div>
+        <div class="faq-a">기존 모의해킹은 사람이 수동으로 점검하기 때문에 시간과 범위에 제약이 있습니다.<br>Alienray는 AI 해커가 24시간 대규모 자산을 자동 탐색하고 공격 시뮬레이션을 수행한 뒤, 고급 화이트해커 전문가가 결과를 직접 검증합니다.<br>단발성 프로젝트가 아닌 반복·연속적 보안 검증이 가능하다는 점도 핵심 차이입니다.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          <span class="faq-q-text">어떤 영역까지 점검할 수 있나요?</span>
+          <div class="faq-toggle">+</div>
+        </div>
+        <div class="faq-a">공격 표면 관리(Surface), 웹, 모바일(Android·iOS), Windows PE 바이너리, IoT 펌웨어, 소스코드까지 6개 영역을 커버합니다.<br>Windows와 IoT 분석은 스틸리언 자체 기술 Diffuto 기반으로 수행됩니다.<br>전체 라인업은 순차 출시 예정이므로 구체적인 일정은 문의해 주세요.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          <span class="faq-q-text">최종 결과물은 어떻게 제공되나요?</span>
+          <div class="faq-toggle">+</div>
+        </div>
+        <div class="faq-a">위험도·재현 방법·개선안이 포함된 최종 보고서를 제공합니다.<br>AI가 수집한 취약점을 전문가가 직접 검증하여 오탐을 최소화한 결과물입니다.<br>도입 규모와 요건에 따라 보고서 형식과 제공 주기를 협의할 수 있습니다.</div>
+      </div>
+    </div>
+    <a href="/faq" style="display:inline-block;margin-top:20px;font-size:13px;color:var(--teal);text-decoration:none;">FAQ 더보기 →</a>
+  </div>
+</section>
+
+<!-- ⑩ CTA -->
+<section class="cta-section" id="cta">
+  <div class="wrap">
+    <h2>AI 해커가 먼저 점검하게 하세요</h2>
+    <p>Alienray 도입 문의 및 자료 요청을 받고 있습니다.</p>
+    <div class="cta-btns">
+      <a href="#" class="btn-cta">문의하기</a>
+      <a href="#" class="btn-cta-outline">자료 요청</a>
+    </div>
+  </div>
+</section>
+
+<!-- ⑪ FOOTER -->
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <svg class="footer-logo-mark" viewBox="0 0 28 28" fill="none">
+            <rect width="28" height="28" rx="6" fill="#5B3FBF" opacity="0.12"/>
+            <path d="M8 14c0-3.3 2.7-6 6-6s6 2.7 6 6-2.7 6-6 6" stroke="#5B3FBF" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="14" cy="14" r="2.5" fill="#5B3FBF"/>
+          </svg>
+          <span class="footer-logo-name">STEALIEN</span>
+        </div>
+        <p class="footer-brand-desc">첨단 기술을 안전하게 제공하는<br>사이버 보안 전문 기업</p>
+        <div class="footer-sns">
+          <div class="footer-sns-icon">f</div>
+          <div class="footer-sns-icon">𝕏</div>
+          <div class="footer-sns-icon">▶</div>
+          <div class="footer-sns-icon">▤</div>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h5>제품</h5>
+        <a>AppSuit Premium</a>
+        <a>AppSuit Keypad</a>
+        <a>AppSuit AV</a>
+        <a>AppSuit RemoteBlock</a>
+        <a style="color:var(--teal);font-weight:500;">전체 제품 보기</a>
+      </div>
+      <div class="footer-col">
+        <h5>컨설팅</h5>
+        <a>보안 컨설팅</a>
+        <a>모의해킹 / 레드팀</a>
+        <a>AI Red Teaming</a>
+        <a style="color:var(--teal);font-weight:500;">AI 해커 기반 모의해킹</a>
+        <h5 style="margin-top:16px;">회사</h5>
+        <a>회사 소개</a>
+        <a>인증 및 수상</a>
+        <a>뉴스·보도자료</a>
+        <a>채용</a>
+      </div>
+      <div class="footer-contact">
+        <h5>연락처</h5>
+        <div class="footer-contact-group">
+          <div class="footer-contact-label">영업 문의</div>
+          <div class="footer-contact-tel">02-2088-4834</div>
+          <div class="footer-contact-email">sales@stealien.com</div>
+        </div>
+        <div class="footer-contact-group">
+          <div class="footer-contact-label">기술 지원</div>
+          <div class="footer-contact-tel">02-2088-4835</div>
+          <div class="footer-contact-email">se@stealien.com</div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copyright">COPYRIGHT © 2026 STEALIEN Inc. ALL RIGHTS RESERVED.</span>
+      <div class="footer-bottom-links">
+        <a>개인정보처리방침</a>
+        <a>이용약관</a>
+        <a>사이트맵</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+function toggleFaq(el) {
+  const item = el.closest('.faq-item');
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(i => {
+    i.classList.remove('open');
+    i.querySelector('.faq-toggle').textContent = '+';
+  });
+  if (!isOpen) {
+    item.classList.add('open');
+    item.querySelector('.faq-toggle').textContent = '−';
+  }
+}
+</script>
+</body>
+</html>
