@@ -1,0 +1,1647 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AppSuit AV — 모바일 앱 내장형 백신 솔루션 | STEALIEN</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   TOKENS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+:root {
+  --ink:        #0A1A14;
+  --ink-mid:    #2C4A3E;
+  --ink-mute:   #6B8C80;
+  --teal:       #1D9E75;
+  --teal-hi:    #25C490;
+  --teal-pale:  #E6F7F0;
+  --teal-dark:  #041A14;
+  --border:     rgba(29,158,117,0.12);
+  --border-mid: rgba(29,158,117,0.22);
+  --white:      #FFFFFF;
+  --font-main:  'DM Sans', sans-serif;
+  --font-mono:  'DM Mono', monospace;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   RESET & BASE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-main);
+  background: var(--white);
+  color: var(--ink);
+  font-size: 15px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+a { text-decoration: none; color: inherit; }
+img { display: block; max-width: 100%; }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   LAYOUT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.wrap { max-width: 1020px; margin: 0 auto; padding: 0 28px; }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   NAV
+━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(4,26,20,0.96);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(29,158,117,0.15);
+}
+.nav-inner {
+  max-width: 1020px; margin: 0 auto; padding: 0 28px;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 56px;
+}
+.nav-brand { display: flex; align-items: center; gap: 10px; }
+.nav-brand-logo {
+  width: 28px; height: 28px;
+  background: var(--teal);
+  border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+}
+.nav-brand-logo svg { width: 16px; height: 16px; }
+.nav-brand-name { font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.85); letter-spacing: 0.03em; }
+.nav-brand-name span { color: var(--teal-hi); }
+.nav-links { display: flex; gap: 24px; }
+.nav-links a { font-size: 12px; color: rgba(255,255,255,0.45); transition: color .15s; }
+.nav-links a:hover { color: rgba(255,255,255,0.8); }
+.nav-cta {
+  background: var(--teal); color: var(--white);
+  font-size: 12px; font-weight: 500;
+  padding: 7px 18px; border-radius: 5px;
+  transition: background .15s;
+}
+.nav-cta:hover { background: var(--teal-hi); }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   SECTION FRAME
+━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.section { padding: 28px 0; }
+
+.sec-title {
+  font-size: 30px; font-weight: 500;
+  color: var(--ink); line-height: 1.25;
+  margin-bottom: 6px;
+}
+.sec-desc {
+  font-size: 14px; color: var(--ink-mute);
+  line-height: 1.75; max-width: 780px;
+  margin-bottom: 16px;
+}
+.subsec-title {
+  font-size: 30px; font-weight: 500; color: var(--ink);
+  line-height: 1.25; margin-bottom: 6px;
+}
+.subsec-desc {
+  font-size: 14px; color: var(--ink-mute);
+  line-height: 1.75; margin-bottom: 16px;
+}
+
+/* 중앙정렬 변형 (지정 섹션에서만 사용) */
+.sec-title.center { text-align: center; }
+.sec-desc.center { text-align: center; max-width: none; margin-left: auto; margin-right: auto; }
+.subsec-title.center { text-align: center; }
+.subsec-desc.center { text-align: center; }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   ① HERO
+━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.hero {
+  background: var(--teal-dark);
+  padding: 72px 0 56px;
+  position: relative; overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute; right: -120px; top: -120px;
+  width: 520px; height: 520px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(29,158,117,0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-inner { display: grid; grid-template-columns: 1fr 380px; gap: 60px; align-items: center; }
+.hero-service-tag {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 11px; color: var(--teal-hi);
+  letter-spacing: 0.08em; margin-bottom: 18px;
+}
+.hero-service-tag-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--teal); animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(1.4)} }
+.hero h1 {
+  font-size: 32px; font-weight: 500; color: var(--white);
+  line-height: 1.25; margin-bottom: 18px; letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+.hero h1 em { color: var(--teal-hi); font-style: normal; }
+.hero-sub {
+  font-size: 15px; color: rgba(255,255,255,0.45);
+  line-height: 1.8; margin-bottom: 32px; max-width: none;
+  white-space: nowrap;
+}
+.hero-ctas { display: flex; gap: 12px; align-items: center; margin-bottom: 0; }
+.btn-primary {
+  background: var(--teal); color: var(--white);
+  font-size: 13px; font-weight: 500;
+  padding: 11px 24px; border-radius: 6px;
+  display: inline-flex; align-items: center; gap: 7px;
+  transition: background .15s;
+}
+.btn-primary:hover { background: var(--teal-hi); }
+.btn-ghost {
+  font-size: 13px; color: rgba(255,255,255,0.5);
+  display: inline-flex; align-items: center; gap: 5px;
+  border-bottom: 1px solid rgba(255,255,255,0.2);
+  padding-bottom: 1px; transition: color .15s;
+}
+.btn-ghost:hover { color: var(--white); }
+
+/* Hero 탭 바 */
+.hero-tab-bar {
+  margin-top: 40px; padding: 6px 8px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 999px;
+  display: flex; gap: 2px; flex-wrap: wrap; align-items: center;
+  justify-content: space-between;
+}
+.hero-tab {
+  font-size: 12px; color: rgba(255,255,255,0.55);
+  padding: 8px 18px; border-radius: 999px;
+  cursor: pointer; text-decoration: none;
+  transition: color .15s, background .15s;
+  font-weight: 500;
+  flex: 1; text-align: center; min-width: 0;
+  white-space: nowrap;
+}
+.hero-tab:hover { color: rgba(255,255,255,0.9); }
+.hero-tab.active {
+  background: var(--teal-hi);
+  color: var(--white);
+  font-weight: 600;
+}
+
+/* Hero 우측 그래픽 */
+.hero-graphic { position: relative; height: 280px; }
+.hero-graphic svg { width: 100%; height: 100%; }
+
+/* cert-pill */
+.cert-pill {
+  font-size: 11px; color: var(--ink-mid);
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 4px; padding: 5px 14px;
+  font-family: var(--font-mono);
+}
+.cert-pills-light .cert-pill {
+  background: var(--teal-pale);
+  border-color: var(--border-mid);
+  color: var(--ink-mid);
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   ② 문제/배경
+━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.problem-grid {
+  display: grid; grid-template-columns: repeat(3,1fr);
+  gap: 0;
+  background: var(--white);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.problem-card {
+  background: var(--white);
+  padding: 28px 28px;
+  position: relative;
+  display: flex; flex-direction: column;
+  border-right: 1px solid var(--border);
+}
+.problem-card:last-child { border-right: none; }
+.problem-card.featured { background: var(--white); }
+.problem-head {
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 16px;
+}
+.problem-icon {
+  width: 36px; height: 36px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.problem-icon.icon-red { background: #FCEAE7; color: #D94F3D; }
+.problem-icon.icon-amber { background: #FFF1E0; color: #E8A020; }
+.problem-icon.icon-gold { background: #FFF6DD; color: #C99520; }
+.problem-icon svg { width: 18px; height: 18px; }
+.problem-q {
+  font-size: 15px; font-weight: 500; color: var(--ink);
+  line-height: 1.4;
+}
+.problem-desc {
+  font-size: 12px; color: var(--ink-mute); line-height: 1.7;
+  margin-bottom: 14px;
+  flex: 1;
+}
+.problem-stat-row {
+  display: flex; align-items: baseline; gap: 10px;
+}
+.problem-stat {
+  font-size: 22px; font-weight: 600;
+  color: var(--teal); line-height: 1;
+  letter-spacing: -0.01em;
+}
+.problem-stat-label {
+  font-size: 11px; color: var(--ink-mute);
+}
+
+/* 조달청 바로가기 버튼 (cert-pill 행 우측 끝) */
+.cert-procurement-link {
+  display: inline-flex; align-items: center; gap: 8px;
+  margin-left: auto;
+  padding: 6px 14px;
+  background: #FFF7DD;
+  color: #8A6914;
+  border: 1px solid #F0DDA0;
+  border-radius: 5px;
+  font-size: 11px; font-weight: 500;
+  text-decoration: none;
+  transition: background .15s, border-color .15s;
+  white-space: nowrap;
+}
+.cert-procurement-link:hover { background: #FFEFB8; border-color: #E5C969; }
+.cert-procurement-link .play-icon { color: #C99520; font-size: 8px; }
+.cert-procurement-link .arrow { font-size: 11px; opacity: 0.6; }
+
+/* 공격 흐름 */
+.flow-block { margin-top: 28px; }
+.flow-label {
+  font-family: var(--font-mono); font-size: 10px;
+  color: var(--ink-mute); text-transform: uppercase;
+  letter-spacing: 0.08em; margin-bottom: 10px;
+}
+.attack-flow {
+  display: flex; align-items: stretch; gap: 0;
+}
+.af-item {
+  flex: 1; padding: 12px 14px;
+  background: var(--white);
+  border: 1px solid var(--border); border-right: none;
+  position: relative;
+  display: flex; align-items: center;
+}
+.af-item:first-child { border-radius: 8px 0 0 8px; }
+.af-item:last-child { border-right: 1px solid var(--border-mid); border-radius: 0 8px 8px 0; }
+.af-item.final { background: var(--teal-pale); border-color: var(--border-mid); border-right: 1px solid var(--border-mid); }
+.af-item.final + .af-item.final { border-left: none; }
+.af-item::after {
+  content: '→'; position: absolute; right: -7px; top: 50%;
+  transform: translateY(-50%); color: var(--teal); font-size: 11px;
+  z-index: 2; background: var(--white); padding: 0 1px; line-height: 1;
+}
+.af-item:last-child::after { display: none; }
+.af-item p { font-size: 11px; color: var(--ink-mute); line-height: 1.45; }
+.af-item.final p { color: var(--teal); font-weight: 500; }
+
+/* 규제 테이블 */
+.reg-block { margin-top: 32px; }
+.reg-wrap { border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+.reg-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.reg-table thead tr { background: transparent; }
+.reg-table th { padding: 12px 16px; text-align: left; font-weight: 500; color: var(--ink-mid); border-bottom: 1px solid var(--border-mid); font-size: 11px; }
+.reg-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); color: var(--ink-mute); vertical-align: top; font-size: 12px; }
+.reg-table tr:last-child td { border-bottom: none; }
+.reg-tag {
+  display: inline-block; font-size: 10px; font-weight: 500;
+  color: var(--teal); background: var(--teal-pale);
+  border: 1px solid var(--border-mid);
+  border-radius: 3px; padding: 2px 8px;
+  font-family: var(--font-mono);
+}
+.reg-note {
+  font-size: 12px; color: var(--ink-mid);
+  margin-top: 12px; line-height: 1.7;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   ③ 기능
+━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.func-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: stretch; margin-bottom: 24px; }
+
+/* 좌: 기능 탭 */
+.func-tabs { display: flex; flex-direction: column; gap: 2px; justify-content: space-between; }
+.func-tab {
+  display: flex; align-items: flex-start; gap: 14px;
+  padding: 14px 16px;
+  border-radius: 8px; cursor: pointer;
+  transition: background .12s;
+  border: 1px solid transparent;
+  flex: 1;
+}
+.func-tab:hover { background: rgba(29,158,117,0.04); }
+.func-tab.active {
+  background: var(--white);
+  border-color: var(--border-mid);
+  box-shadow: 0 1px 8px rgba(29,158,117,0.06);
+}
+.func-tab-bar {
+  width: 3px; flex-shrink: 0;
+  border-radius: 2px; background: var(--border-mid);
+  margin-top: 3px; align-self: stretch;
+  transition: background .12s;
+}
+.func-tab.active .func-tab-bar { background: var(--teal); }
+.func-tab-name { font-size: 13px; font-weight: 500; color: var(--ink); margin-bottom: 3px; }
+.func-tab-tags { display: flex; flex-wrap: wrap; gap: 4px; }
+.func-tag { font-size: 10px; color: var(--ink-mute); }
+.func-tag::after { content: ' ·'; color: var(--border-mid); }
+.func-tag:last-child::after { content: ''; }
+
+/* 우: 기술 설명 — 박스 최소화 (텍스트 흐름) */
+.func-right { display: flex; flex-direction: column; gap: 14px; padding-top: 4px; }
+.func-def {
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+}
+.func-def:last-child { border-bottom: none; padding-bottom: 0; }
+.func-def-label {
+  font-family: var(--font-mono); font-size: 10px;
+  color: var(--teal); letter-spacing: 0.10em;
+  text-transform: uppercase; margin-bottom: 5px;
+}
+.func-def-title { font-size: 14px; font-weight: 500; color: var(--ink); margin-bottom: 5px; }
+.func-def-desc { font-size: 12px; color: var(--ink-mute); line-height: 1.7; }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   ④ 적용 방법 — 신규 디자인
+━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+/* 상단 teal 배너 */
+.apply-banner {
+  background: var(--teal-pale);
+  border: 1px solid var(--border-mid);
+  border-radius: 10px;
+  padding: 18px 24px;
+  display: flex; align-items: center; gap: 16px;
+  margin-bottom: 36px;
+}
+.apply-banner-icon {
+  width: 40px; height: 40px; border-radius: 8px;
+  background: rgba(29,158,117,0.18);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; color: var(--teal);
+}
+.apply-banner-text { flex: 1; min-width: 0; }
+.apply-banner-title {
+  font-size: 14px; font-weight: 500; color: var(--ink);
+  margin-bottom: 3px;
+}
+.apply-banner-title em { font-style: normal; color: var(--teal); }
+.apply-banner-desc {
+  font-size: 12px; color: var(--ink-mute);
+  line-height: 1.5;
+}
+.apply-banner-tags {
+  display: flex; gap: 6px; flex-wrap: wrap; flex-shrink: 0;
+}
+.apply-banner-tag {
+  font-size: 10px; color: var(--teal);
+  background: var(--white);
+  border: 1px solid var(--border-mid);
+  border-radius: 4px; padding: 4px 10px;
+  font-weight: 500; white-space: nowrap;
+}
+
+/* 3컬럼 타임라인 */
+.apply-timeline {
+  position: relative;
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  padding: 0 0 8px;
+}
+/* 가로 연결선 - 아이콘 중앙 높이에 점선 */
+.apply-timeline::before {
+  content: '';
+  position: absolute;
+  top: 24px; left: 16.66%; right: 16.66%;
+  height: 1px;
+  background-image: linear-gradient(to right, var(--border-mid) 50%, transparent 50%);
+  background-size: 8px 1px;
+  background-repeat: repeat-x;
+  z-index: 0;
+}
+.apply-step {
+  position: relative; z-index: 1;
+  display: flex; flex-direction: column; align-items: center;
+  text-align: center;
+  padding: 0 12px;
+}
+.apply-step-icon {
+  width: 48px; height: 48px; border-radius: 50%;
+  background: var(--teal);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--white);
+  margin-bottom: 14px;
+  position: relative; z-index: 2;
+}
+.apply-step-icon svg { width: 20px; height: 20px; }
+.apply-step-num {
+  font-family: var(--font-mono); font-size: 11px;
+  color: var(--ink-mute); margin-bottom: 4px;
+}
+.apply-step-title {
+  font-size: 14px; font-weight: 500; color: var(--ink);
+  margin-bottom: 8px;
+}
+.apply-step-desc {
+  font-size: 12px; color: var(--ink-mute);
+  line-height: 1.6; margin-bottom: 14px;
+  max-width: 240px;
+}
+.apply-step-owner {
+  font-size: 11px; color: var(--teal); font-weight: 500;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   ⑤ 차별점
+━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.diff-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
+.diff-list { display: flex; flex-direction: column; gap: 0; }
+.diff-item {
+  display: flex; align-items: flex-start; gap: 14px;
+  padding: 16px 0;
+}
+.diff-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--teal); flex-shrink: 0; margin-top: 6px; }
+.diff-name { font-size: 13px; font-weight: 500; color: var(--ink); margin-bottom: 3px; }
+.diff-desc { font-size: 12px; color: var(--ink-mute); line-height: 1.6; }
+
+/* 라인업 비교 — 박스 외곽 최소화, 표만 유지 */
+.lineup-eyebrow {
+  font-family: var(--font-mono); font-size: 10px;
+  color: var(--teal); letter-spacing: 0.10em;
+  text-transform: uppercase; margin-bottom: 8px;
+  text-align: center;
+}
+.lineup-title { font-size: 15px; font-weight: 500; color: var(--ink); margin-bottom: 6px; text-align: center; }
+.lineup-desc { font-size: 13px; color: var(--ink-mute); line-height: 1.7; margin-bottom: 14px; text-align: center; }
+.lineup-wrap { border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+.lineup-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.lineup-table thead tr { background: var(--teal-pale); }
+.lineup-table th { padding: 12px 14px; text-align: center; font-weight: 500; color: var(--ink-mid); border-bottom: 1px solid var(--border-mid); font-size: 11px; }
+.lineup-table th:nth-child(2) { color: var(--teal); }
+.lineup-table td { padding: 10px 14px; border-bottom: 1px solid var(--border); color: var(--ink-mute); font-size: 12px; }
+.lineup-table td:first-child { color: var(--ink); font-weight: 500; }
+.lineup-table th:first-child,
+.lineup-table td:first-child { white-space: nowrap; }
+.lineup-table tr:last-child td { border-bottom: none; }
+.lineup-note { font-size: 11px; color: var(--ink-mute); margin-top: 10px; line-height: 1.6; }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   ⑥ 레퍼런스
+━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.ref-hero-cards { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-bottom: 0; }
+.ref-hero-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 10px; padding: 22px;
+}
+.ref-sector { font-family: var(--font-mono); font-size: 9px; color: var(--teal); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 6px; }
+.ref-name { font-size: 15px; font-weight: 500; color: var(--ink); margin-bottom: 6px; }
+.ref-badge {
+  display: inline-block; font-size: 10px;
+  background: var(--teal-pale); color: var(--teal);
+  border: 1px solid var(--border-mid);
+  border-radius: 3px; padding: 2px 8px; margin-bottom: 10px;
+  font-family: var(--font-mono);
+}
+.ref-result { font-size: 13px; font-weight: 500; color: var(--ink); margin-bottom: 6px; }
+.ref-quote { font-size: 11px; color: var(--ink-mute); line-height: 1.65; font-style: italic; }
+
+.ref-logo-row {
+  display: flex; align-items: center; gap: 14px;
+  padding: 12px 18px;
+  border: 1px solid var(--border);
+  border-radius: 8px; flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+.ref-logo-label { font-family: var(--font-mono); font-size: 9px; color: var(--ink-mute); text-transform: uppercase; letter-spacing: 0.1em; white-space: nowrap; }
+.ref-logo-divider { width: 1px; height: 14px; background: var(--border); flex-shrink: 0; }
+.ref-logo-list { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+.ref-logo-pill { font-size: 11px; color: var(--ink-mid); font-weight: 500; }
+
+/* 조달청 배너 */
+.proc-banner {
+  display: flex; align-items: center; justify-content: space-between;
+  background: var(--teal-pale); border: 1px solid var(--border-mid);
+  border-radius: 8px; padding: 14px 20px; margin-top: 20px;
+  flex-wrap: wrap; gap: 12px;
+}
+.proc-banner p { font-size: 12px; color: var(--ink-mid); }
+.proc-link {
+  font-size: 12px; color: var(--teal);
+  border: 1px solid var(--border-mid);
+  border-radius: 6px; padding: 6px 14px;
+  white-space: nowrap; flex-shrink: 0;
+  background: var(--white);
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   ⑦ 인증/규제
+━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.cert-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+.cert-item {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: 10px; padding: 20px 22px;
+}
+.cert-item-eyebrow {
+  font-family: var(--font-mono); font-size: 9px;
+  color: var(--teal); text-transform: uppercase;
+  letter-spacing: 0.1em; margin-bottom: 8px;
+}
+.cert-item strong { display: block; font-size: 14px; font-weight: 500; color: var(--ink); margin-bottom: 6px; }
+.cert-item span { font-size: 12px; color: var(--ink-mute); line-height: 1.65; }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   ⑧ AppSuit Radar 연동 확장
+━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.radar-section { padding: 28px 0; }
+.radar-eyebrow-wrap { text-align: center; margin-bottom: 14px; }
+.radar-eyebrow {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 10px; color: var(--teal);
+  letter-spacing: 0.12em; text-transform: uppercase;
+  background: var(--teal-pale);
+  border: 1px solid var(--border-mid);
+  border-radius: 999px;
+  padding: 6px 18px;
+  font-weight: 500;
+}
+
+/* 중앙 비교 박스 */
+.radar-compare {
+  margin-top: 28px; margin-bottom: 32px;
+  background: transparent;
+  border: none;
+  padding: 24px 32px 28px;
+}
+.radar-compare-label {
+  text-align: center;
+  font-size: 12px; color: var(--ink-mute);
+  margin-bottom: 14px;
+}
+.radar-compare-row {
+  display: flex; align-items: center; justify-content: center;
+  gap: 16px;
+}
+.radar-pill {
+  flex: 0 1 320px; max-width: 320px;
+  padding: 18px 24px; border-radius: 10px;
+  text-align: center;
+}
+.radar-pill.filled {
+  background: var(--teal);
+  color: var(--white);
+}
+.radar-pill.outlined {
+  background: var(--white);
+  border: 2px solid var(--teal);
+  color: var(--teal);
+}
+.radar-pill-label {
+  font-family: var(--font-mono);
+  font-size: 10px; letter-spacing: 0.12em;
+  margin-bottom: 6px;
+  opacity: 0.85;
+}
+.radar-pill-name {
+  font-size: 16px; font-weight: 500;
+  line-height: 1.3;
+}
+.radar-arrow {
+  display: flex; flex-direction: column; align-items: center;
+  flex-shrink: 0; gap: 4px;
+}
+.radar-arrow svg { color: var(--teal); width: 22px; height: 22px; }
+.radar-arrow-label {
+  font-size: 10px; color: var(--ink-mute);
+}
+
+/* 하단 레이아웃: 좌측 카드 4개 + 우측 모니터링 박스 */
+.radar-bottom {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.radar-cards-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.radar-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 20px;
+}
+.radar-card-icon {
+  width: 32px; height: 32px; border-radius: 8px;
+  background: var(--teal-pale);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--teal);
+  margin-bottom: 14px;
+}
+.radar-card-icon svg { width: 16px; height: 16px; }
+.radar-card-title {
+  font-size: 13px; font-weight: 500; color: var(--ink);
+  margin-bottom: 6px;
+}
+.radar-card-desc {
+  font-size: 11px; color: var(--ink-mute);
+  line-height: 1.65;
+}
+
+/* 우측 모니터링 박스 */
+.radar-monitor {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 20px 22px;
+}
+.radar-monitor-head {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  margin-bottom: 16px;
+}
+.radar-monitor-meta {
+  font-family: var(--font-mono); font-size: 10px;
+  color: var(--ink-mute); letter-spacing: 0.06em;
+  margin-bottom: 4px;
+}
+.radar-monitor-title {
+  font-size: 15px; font-weight: 500; color: var(--ink);
+}
+.radar-monitor-pulse {
+  width: 28px; height: 28px; border-radius: 8px;
+  background: var(--teal-pale); color: var(--teal);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.radar-monitor-pulse svg { width: 14px; height: 14px; }
+
+.radar-stats {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-bottom: 18px;
+  padding: 14px 6px;
+  background: rgba(29,158,117,0.04);
+  border-radius: 8px;
+}
+.rstat-box { text-align: center; padding: 0 4px; }
+.rstat-icon {
+  width: 22px; height: 22px;
+  margin: 0 auto 6px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--ink-mute);
+}
+.rstat-icon svg { width: 14px; height: 14px; }
+.rstat-icon.r-red { color: #D94F3D; }
+.rstat-icon.r-amber { color: #E8A020; }
+.rstat-icon.r-purple { color: #7B5FBF; }
+.rstat-val {
+  font-size: 18px; font-weight: 600; color: var(--ink);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.rstat-key {
+  font-size: 10px; color: var(--ink-mute);
+}
+
+.radar-bars { display: flex; flex-direction: column; gap: 10px; }
+.rbar-row {
+  display: grid; grid-template-columns: 90px 1fr 36px;
+  align-items: center; gap: 10px;
+}
+.rbar-label { font-size: 11px; color: var(--ink); }
+.rbar-track {
+  height: 4px; background: var(--border); border-radius: 2px;
+  overflow: hidden;
+}
+.rbar-fill {
+  height: 100%; background: var(--teal-hi); border-radius: 2px;
+}
+.rbar-pct {
+  font-family: var(--font-mono); font-size: 10px;
+  color: var(--teal); text-align: right;
+}
+.radar-monitor-foot {
+  font-size: 10px; color: var(--ink-mute);
+  text-align: right; margin-top: 12px;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   ⑨ FAQ
+━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.faq-list { display: flex; flex-direction: column; gap: 0; max-width: 700px; }
+.faq-item { overflow: hidden; }
+.faq-q {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 0; cursor: pointer; gap: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.faq-item.open .faq-q { border-bottom: none; }
+.faq-q-text { font-size: 13px; color: var(--ink); font-weight: 500; line-height: 1.5; }
+.faq-toggle {
+  width: 20px; height: 20px; border-radius: 50%;
+  background: var(--white); border: 1px solid var(--border); flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; color: var(--teal); transition: background .15s;
+  font-weight: 300; line-height: 1;
+}
+.faq-item.open .faq-toggle { background: var(--teal); color: var(--white); }
+.faq-a {
+  font-size: 13px; color: var(--ink-mute); line-height: 1.75;
+  padding-bottom: 16px; display: none;
+}
+.faq-item.open .faq-a { display: block; }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   ⑩ CTA
+━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.cta-section {
+  background: var(--teal-pale); padding: 56px 0; text-align: center;
+  border-top: 1px solid var(--border-mid);
+}
+.cta-section h2 { font-size: 28px; font-weight: 500; color: var(--ink); margin-bottom: 10px; }
+.cta-section p { font-size: 14px; color: var(--ink-mid); margin-bottom: 28px; line-height: 1.75; }
+.cta-btns { display: flex; justify-content: center; gap: 12px; }
+.btn-cta { background: var(--teal); color: var(--white); font-size: 13px; font-weight: 500; padding: 12px 28px; border-radius: 6px; transition: background .15s; }
+.btn-cta:hover { background: var(--teal-hi); }
+.btn-cta-outline { border: 1px solid var(--border-mid); color: var(--ink-mid); font-size: 13px; padding: 12px 28px; border-radius: 6px; transition: border-color .15s, color .15s; background: var(--white); }
+.btn-cta-outline:hover { border-color: var(--teal); color: var(--teal); }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   FOOTER
+━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.footer { background: #F7F8F7; padding: 48px 0 0; border-top: 1px solid #E4E9E6; }
+.footer-inner { display: grid; grid-template-columns: 220px 160px 160px 260px; gap: 0; margin-bottom: 0; }
+.footer-brand { padding-right: 40px; }
+.footer-logo { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+.footer-logo-mark { width: 28px; height: 28px; }
+.footer-logo-name { font-size: 15px; font-weight: 700; color: #5B3FBF; letter-spacing: 0.02em; }
+.footer-brand-desc { font-size: 12px; color: #6B7C74; line-height: 1.7; margin-bottom: 18px; }
+.footer-sns { display: flex; gap: 8px; }
+.footer-sns-icon { width: 30px; height: 30px; border-radius: 4px; border: 1px solid #D8DDD9; background: var(--white); display: flex; align-items: center; justify-content: center; font-size: 12px; color: #5B7068; cursor: pointer; }
+.footer-col { padding: 0 20px; }
+.footer-col h5 { font-size: 13px; font-weight: 600; color: #1A2E26; margin-bottom: 14px; }
+.footer-col a { display: block; font-size: 13px; color: #5B7068; margin-bottom: 10px; cursor: pointer; }
+.footer-col a:hover { color: var(--teal); }
+.footer-contact { padding-left: 20px; }
+.footer-contact h5 { font-size: 13px; font-weight: 600; color: #1A2E26; margin-bottom: 14px; }
+.footer-contact-group { margin-bottom: 14px; }
+.footer-contact-label { font-size: 12px; font-weight: 600; color: #1A2E26; margin-bottom: 3px; }
+.footer-contact-tel { font-size: 12px; color: #5B7068; margin-bottom: 2px; }
+.footer-contact-email { font-size: 12px; color: var(--teal); }
+.footer-bottom { border-top: 1px solid #D8DDD9; margin-top: 36px; padding: 16px 0; display: flex; justify-content: space-between; align-items: center; }
+.footer-copyright { font-size: 11px; color: #8FA89C; }
+.footer-bottom-links { display: flex; gap: 16px; }
+.footer-bottom-links a { font-size: 11px; color: #5B7068; cursor: pointer; }
+.footer-bottom-links a:hover { color: var(--teal); }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="nav-brand">
+      <div class="nav-brand-logo">
+        <svg viewBox="0 0 16 16" fill="none"><path d="M8 2L2 5v4c0 3 2.5 5.2 6 6 3.5-.8 6-3 6-6V5L8 2z" fill="white" opacity=".9"/></svg>
+      </div>
+      <span class="nav-brand-name">STEALIEN <span>AppSuit AV</span></span>
+    </div>
+    <div class="nav-links">
+      <a href="#features">기능</a>
+      <a href="#apply">적용 방식</a>
+      <a href="#diff">차별점</a>
+      <a href="#ref">레퍼런스</a>
+      <a href="#cert">인증</a>
+      <a href="#radar">Radar 연동</a>
+      <a href="#faq">FAQ</a>
+    </div>
+    <a href="#cta" class="nav-cta">도입 문의</a>
+  </div>
+</nav>
+
+<!-- ① HERO -->
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-inner">
+      <div>
+        <div class="hero-service-tag">
+          <div class="hero-service-tag-dot"></div>
+          AppSuit AV
+        </div>
+        <h1>모바일 악성코드 위협을 실시간 차단,<br><em>앱수트 AV로 완벽한 앱 보안</em></h1>
+        <p class="hero-sub">모바일 앱의 악성코드를 실시간으로 탐지·차단하는 스마트폰 전용 백신 솔루션.<br>GS인증 1등급 ·스마트폰 전용 백신 SDK 솔루션</p>
+      </div>
+      <div class="hero-graphic">
+        <svg viewBox="0 0 340 260" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- 방어 원형 -->
+          <circle cx="170" cy="130" r="100" stroke="rgba(29,158,117,0.12)" stroke-width="1"/>
+          <circle cx="170" cy="130" r="70" stroke="rgba(29,158,117,0.18)" stroke-width="1"/>
+          <circle cx="170" cy="130" r="40" fill="rgba(29,158,117,0.08)" stroke="#1D9E75" stroke-width="1"/>
+          <text x="170" y="124" text-anchor="middle" font-size="9" fill="#5DCAA5" font-family="DM Mono">APP</text>
+          <text x="170" y="136" text-anchor="middle" font-size="9" fill="#5DCAA5" font-family="DM Mono">SUIT AV</text>
+          <!-- 악성코드 위협 노드 -->
+          <circle cx="55" cy="44" r="5" fill="#D94F3D" opacity="0.8"><animate attributeName="opacity" values="0.8;0.2;0.8" dur="2.1s" repeatCount="indefinite"/></circle>
+          <circle cx="290" cy="60" r="4" fill="#D94F3D" opacity="0.65"><animate attributeName="opacity" values="0.65;0.15;0.65" dur="1.7s" repeatCount="indefinite"/></circle>
+          <circle cx="38" cy="195" r="4.5" fill="#D94F3D" opacity="0.75"><animate attributeName="opacity" values="0.75;0.2;0.75" dur="2.4s" repeatCount="indefinite"/></circle>
+          <circle cx="302" cy="200" r="4" fill="#D94F3D" opacity="0.6"><animate attributeName="opacity" values="0.6;0.1;0.6" dur="1.9s" repeatCount="indefinite"/></circle>
+          <circle cx="170" cy="20" r="3.5" fill="#D94F3D" opacity="0.5"><animate attributeName="opacity" values="0.5;0.1;0.5" dur="2.6s" repeatCount="indefinite"/></circle>
+          <!-- 위협선 -->
+          <line x1="59" y1="49" x2="132" y2="105" stroke="#D94F3D" stroke-width="0.5" stroke-dasharray="4 4" opacity="0.35"/>
+          <line x1="286" y1="64" x2="208" y2="105" stroke="#D94F3D" stroke-width="0.5" stroke-dasharray="4 4" opacity="0.3"/>
+          <line x1="42" y1="191" x2="132" y2="148" stroke="#D94F3D" stroke-width="0.5" stroke-dasharray="4 4" opacity="0.3"/>
+          <line x1="298" y1="196" x2="208" y2="152" stroke="#D94F3D" stroke-width="0.5" stroke-dasharray="4 4" opacity="0.25"/>
+          <line x1="170" y1="24" x2="170" y2="90" stroke="#D94F3D" stroke-width="0.5" stroke-dasharray="4 4" opacity="0.3"/>
+          <!-- 차단 표시 -->
+          <circle cx="96" cy="78" r="7" fill="rgba(29,158,117,0.18)" stroke="#1D9E75" stroke-width="0.8"/>
+          <text x="96" y="81" text-anchor="middle" font-size="7" fill="#5DCAA5">✕</text>
+          <circle cx="242" cy="84" r="6" fill="rgba(29,158,117,0.18)" stroke="#1D9E75" stroke-width="0.8"/>
+          <text x="242" y="87" text-anchor="middle" font-size="7" fill="#5DCAA5">✕</text>
+          <circle cx="170" cy="56" r="6" fill="rgba(29,158,117,0.18)" stroke="#1D9E75" stroke-width="0.8"/>
+          <text x="170" y="59" text-anchor="middle" font-size="7" fill="#5DCAA5">✕</text>
+          <!-- 탐지율 라벨 -->
+          <rect x="106" y="200" width="128" height="28" rx="5" fill="rgba(29,158,117,0.12)" stroke="rgba(29,158,117,0.3)" stroke-width="0.8"/>
+          <text x="170" y="217" text-anchor="middle" font-size="9" fill="#5DCAA5" font-family="DM Mono">KISA 탐지율 98%</text>
+        </svg>
+      </div>
+    </div>
+    <!-- Hero 탭 바 (전체 폭) -->
+    <div class="hero-tab-bar">
+      <a class="hero-tab" href="#">AppSuit</a>
+      <a class="hero-tab" href="#">Premium</a>
+      <a class="hero-tab" href="#">Air</a>
+      <a class="hero-tab active" href="#">AV</a>
+      <a class="hero-tab" href="#">Keypad</a>
+      <a class="hero-tab" href="#">Anti-Capture</a>
+      <a class="hero-tab" href="#">RemoteBlock</a>
+      <a class="hero-tab" href="#">MacroBlock</a>
+      <a class="hero-tab" href="#">VPNBlock</a>
+      <a class="hero-tab" href="#">Unit</a>
+      <a class="hero-tab" href="#">Radar</a>
+    </div>
+  </div>
+</section>
+
+<!-- ② 문제/배경 -->
+<section class="section" id="problem">
+  <div class="wrap">
+    <div class="cert-pills-light" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:56px">
+      <span class="cert-pill">GS 인증 1등급</span>
+      <span class="cert-pill">특허 등록</span>
+      <span class="cert-pill">KISA 탐지율 98%</span>
+      <span class="cert-pill">조달청 디지털서비스몰 등록</span>
+      <a href="#" class="cert-procurement-link">
+        <span class="play-icon">▶</span>조달청 디지털서비스몰 바로가기<span class="arrow">→</span>
+      </a>
+    </div>
+    <div class="sec-title center">고객 접점의 중심, 스마트폰 — 사이버 공격의 메인 타겟입니다</div>
+    <p class="sec-desc center">스미싱 문자로 유도된 악성 앱 설치, 위변조 앱, 스크린 주입형 공격이 단말에서 시작해 고객 계정 유출과<br>금융 피해, 기업 리스크를 동시에 촉발합니다. 이제 모바일 백신은 옵션이 아니라,<br>스미싱과 악성 코드·악성 앱 설치를 막아내는 기업의 기본 보안 인프라입니다.</p>
+
+    <div class="problem-grid">
+      <div class="problem-card">
+        <div class="problem-head">
+          <div class="problem-icon icon-red">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="3"></circle>
+              <path d="M12 1v6m0 10v6"></path>
+              <path d="M4.22 4.22l4.24 4.24m7.07 7.07l4.24 4.24"></path>
+              <path d="M1 12h6m10 0h6"></path>
+              <path d="M4.22 19.78l4.24-4.24m7.07-7.07l4.24-4.24"></path>
+            </svg>
+          </div>
+          <div class="problem-q">급증하는 모바일 악성코드</div>
+        </div>
+        <div class="problem-desc">비공식 루트를 통한 악성 앱 유포가 지속적으로 증가하며 모바일 환경 전반을 위협합니다.</div>
+        <div class="problem-stat-row">
+          <span class="problem-stat">매년 25% ↑</span>
+          <span class="problem-stat-label">모바일 악성코드 증가율</span>
+        </div>
+      </div>
+      <div class="problem-card">
+        <div class="problem-head">
+          <div class="problem-icon icon-amber">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="8" x2="12" y2="12"></line>
+              <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
+          </div>
+          <div class="problem-q">사회 공학적 공격</div>
+        </div>
+        <div class="problem-desc">보이스피싱·스미싱·악성 링크를 통한 개인정보 유출 및 불법 이체 시도가 사회적 문제로 대두되고 있습니다.</div>
+        <div class="problem-stat-row">
+          <span class="problem-stat">3배</span>
+          <span class="problem-stat-label">최근 3년간 스미싱 피해 증가</span>
+        </div>
+      </div>
+      <div class="problem-card">
+        <div class="problem-head">
+          <div class="problem-icon icon-gold">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 21h18"></path>
+              <path d="M5 21V10l7-5 7 5v11"></path>
+              <path d="M9 21v-6h6v6"></path>
+            </svg>
+          </div>
+          <div class="problem-q">중요 업무의 모바일화</div>
+        </div>
+        <div class="problem-desc">금융·행정 업무가 모바일로 집중되면서 개인 기기의 보안 위험이 기업의 리스크로 직결됩니다.</div>
+        <div class="problem-stat-row">
+          <span class="problem-stat">78%</span>
+          <span class="problem-stat-label">모바일 금융 앱 이용률</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 공격 흐름 -->
+    <div class="flow-block">
+      <div class="flow-label">스미싱 공격 → 악성 앱 설치 → AppSuit AV 탐지·차단 흐름</div>
+      <div class="attack-flow">
+        <div class="af-item"><p>스미싱 문자 수신</p></div>
+        <div class="af-item"><p>악성 링크 클릭</p></div>
+        <div class="af-item"><p>악성 앱 다운로드 시도</p></div>
+        <div class="af-item final"><p>AppSuit AV 실시간 감지</p></div>
+        <div class="af-item final"><p>탐지 및 삭제 권고</p></div>
+        <div class="af-item final"><p>사용자 보호 완료</p></div>
+      </div>
+    </div>
+
+    <!-- 규제 기반 보안 요구사항 -->
+    <div class="reg-block" style="margin-top:48px">
+      <div class="subsec-title center">모바일 백신, 선택이 아닌 필수 규제 요건</div>
+      <p class="subsec-desc center">금융·공공·개인정보·통신망 전반에서 모바일 백신은 법령·가이드라인에 명시된 기본 보안 요소입니다.</p>
+      <div class="reg-wrap">
+        <table class="reg-table">
+          <thead>
+            <tr>
+              <th>적용 분야</th>
+              <th>관련 부처</th>
+              <th>핵심 규정</th>
+              <th>요구 항목</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>금융 / 결제</td>
+              <td>금융위원회 · 금융보안원</td>
+              <td>전자금융감독규정 제15조</td>
+              <td>악성코드 감염 방지대책</td>
+            </tr>
+            <tr>
+              <td>공공 / 행정</td>
+              <td>행정안전부</td>
+              <td>모바일 전자정부 서비스 관리 지침</td>
+              <td>모바일 백신</td>
+            </tr>
+            <tr>
+              <td>일반 / 개인정보</td>
+              <td>개인정보보호위원회</td>
+              <td>개인정보의 안전성 확보조치 기준 제6조</td>
+              <td>백신 소프트웨어</td>
+            </tr>
+            <tr>
+              <td>IT / 통신망</td>
+              <td>과학기술정보통신부</td>
+              <td>기술적·관리적 보호조치 기준 제5조</td>
+              <td>백신 프로그램</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="reg-note">※ 모바일 앱 보안은 선택 옵션 아니라, 반드시 대응할 필수 보안 규제입니다.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ③ 기능 -->
+<section class="section" id="features">
+  <div class="wrap">
+    <div class="sec-title center">모바일 앱에 탑재되는 경량 백신 모듈</div>
+    <p class="sec-desc center">모바일 앱에 내장된 백신으로, 5가지 핵심 기술 기반의 실시간 악성코드 탐지·차단 스마트폰 보안 솔루션입니다.</p>
+
+    <!-- 상단 2컬럼: 기능 탭(좌) + 기술 설명(우, 텍스트 흐름) -->
+    <div class="func-layout">
+      <div class="func-tabs">
+        <div class="func-tab active">
+          <div class="func-tab-bar"></div>
+          <div>
+            <div class="func-tab-name">지능형 탐지 및 대응</div>
+            <div class="func-tab-tags">
+              <span class="func-tag">바이러스 탐지</span>
+              <span class="func-tag">웜·트로이 목마</span>
+              <span class="func-tag">의심 파일 알림</span>
+              <span class="func-tag">삭제 권고</span>
+            </div>
+          </div>
+        </div>
+        <div class="func-tab">
+          <div class="func-tab-bar"></div>
+          <div>
+            <div class="func-tab-name">실시간 상시 감시</div>
+            <div class="func-tab-tags">
+              <span class="func-tag">설치 시점 검사</span>
+              <span class="func-tag">실행 중 상시 감시</span>
+              <span class="func-tag">루팅 탐지</span>
+            </div>
+          </div>
+        </div>
+        <div class="func-tab">
+          <div class="func-tab-bar"></div>
+          <div>
+            <div class="func-tab-name">자동 업데이트 체계</div>
+            <div class="func-tab-tags">
+              <span class="func-tag">AWS 이중화 서버</span>
+              <span class="func-tag">자동 패턴 업데이트</span>
+              <span class="func-tag">LTE·5G·WiFi 지원</span>
+            </div>
+          </div>
+        </div>
+        <div class="func-tab">
+          <div class="func-tab-bar"></div>
+          <div>
+            <div class="func-tab-name">최신 자체 엔진</div>
+            <div class="func-tab-tags">
+              <span class="func-tag">스틸리언 직접 개발</span>
+              <span class="func-tag">Zero-Day 대응</span>
+              <span class="func-tag">타사 의존 없음</span>
+            </div>
+          </div>
+        </div>
+        <div class="func-tab">
+          <div class="func-tab-bar"></div>
+          <div>
+            <div class="func-tab-name">유연한 결과 핸들링</div>
+            <div class="func-tab-tags">
+              <span class="func-tag">즉시 삭제</span>
+              <span class="func-tag">사용자 알림</span>
+              <span class="func-tag">맞춤 정책</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 우: 박스 없는 텍스트 흐름 -->
+      <div class="func-right">
+        <div class="func-def">
+          <div class="func-def-label">Detect</div>
+          <div class="func-def-title">악성코드 탐지 및 제거</div>
+          <div class="func-def-desc">바이러스·웜·트로이 목마 등 악성코드를 탐지하고 즉시 삭제를 권고합니다.<br>의심 파일을 실시간으로 알림 처리하여 사용자 보호 공백을 없앱니다.</div>
+        </div>
+        <div class="func-def">
+          <div class="func-def-label">Protect</div>
+          <div class="func-def-title">설치 시점부터 실시간 보호</div>
+          <div class="func-def-desc">앱 설치 시점과 실행 중 모두 악성 앱을 검사하여 빈틈 없는 방어를 제공합니다.<br>루팅 기기 상태도 지속 점검하여 환경 자체의 위험을 함께 통제합니다.</div>
+        </div>
+        <div class="func-def">
+          <div class="func-def-label">Update</div>
+          <div class="func-def-title">지속적인 위협 대응</div>
+          <div class="func-def-desc">앱 실행 시마다 최신 패턴을 자동 업데이트하여 신종 위협에 항상 대응합니다.<br>AWS 이중화 서버 기반으로 고가용성을 보장합니다.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ④ 적용 방법 -->
+<section class="section" id="apply">
+  <div class="wrap">
+    <div class="sec-title center">간편한 SDK 추가 방식</div>
+    <p class="sec-desc center">AppSuit AV는 독립 앱이 아닌, 고객사 앱에 삽입되는 내장형 백신 모듈입니다.<br>기존 빌드 파이프라인을 그대로 유지하면서 3단계로 적용을 마칠 수 있습니다.</p>
+
+    <!-- 상단 teal 배너 -->
+    <div class="apply-banner">
+      <div class="apply-banner-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="16 18 22 12 16 6"></polyline>
+          <polyline points="8 6 2 12 8 18"></polyline>
+        </svg>
+      </div>
+      <div class="apply-banner-text">
+        <div class="apply-banner-title">일반 앱이 아닌 <em>"고객 앱에 삽입되는 구조"</em></div>
+        <div class="apply-banner-desc">AppSuit AV 라이브러리를 고객사 앱 개발 환경에 추가하고 빌드하면, 백신 기능이 앱 내부에 탑재됩니다.</div>
+      </div>
+      <div class="apply-banner-tags">
+        <span class="apply-banner-tag">SDK 방식</span>
+        <span class="apply-banner-tag">앱 내장</span>
+        <span class="apply-banner-tag">B2B 구조</span>
+      </div>
+    </div>
+
+    <!-- 3컬럼 타임라인 -->
+    <div class="apply-timeline">
+      <div class="apply-step">
+        <div class="apply-step-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+          </svg>
+        </div>
+        <div class="apply-step-num">01</div>
+        <div class="apply-step-title">라이브러리 전달</div>
+        <div class="apply-step-desc">고객사에 AppSuit AV 호출 라이브러리를 전달</div>
+        <div class="apply-step-owner">스틸리언</div>
+      </div>
+      <div class="apply-step">
+        <div class="apply-step-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path>
+          </svg>
+        </div>
+        <div class="apply-step-num">02</div>
+        <div class="apply-step-title">라이브러리 추가 및 빌드</div>
+        <div class="apply-step-desc">앱 개발 환경에 라이브러리를 추가하고 빌드</div>
+        <div class="apply-step-owner">개발사</div>
+      </div>
+      <div class="apply-step">
+        <div class="apply-step-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="22" y1="2" x2="11" y2="13"></line>
+            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+          </svg>
+        </div>
+        <div class="apply-step-num">03</div>
+        <div class="apply-step-title">앱 배포</div>
+        <div class="apply-step-desc">완성된 앱을 스토어에 배포</div>
+        <div class="apply-step-owner">개발사</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ⑤ 차별점 -->
+<section class="section" id="diff">
+  <div class="wrap">
+    <div class="sec-title center">화이트해커의 모바일 분석 역량이 만든 백신</div>
+    <p class="sec-desc center">실제 모바일 앱 취약점 제보와 공격 분석 경험을 그대로 제품에 녹여 모바일 환경 특화 위협 탐지 역량을 갖췄습니다.<br>KISA 정보보호제품 성능평가 탐지율 98%로 검증된 보안 성능.</p>
+    <div class="diff-layout">
+      <!-- 좌: 차별점 리스트 -->
+      <div class="diff-list">
+        <div class="diff-item">
+          <div class="diff-dot"></div>
+          <div>
+            <div class="diff-name">KISA 공인 탐지율 98% — 검증된 성능</div>
+            <div class="diff-desc">한국인터넷진흥원(KISA) 정보보호제품 성능평가에서 탐지율 98%를 달성했습니다.<br>공인된 수치로 보안 성능을 증명합니다.</div>
+          </div>
+        </div>
+        <div class="diff-item">
+          <div class="diff-dot"></div>
+          <div>
+            <div class="diff-name">모바일 앱 취약점 제보 이력 — 공격자 관점</div>
+            <div class="diff-desc">롯데마트 M쿠폰, G9, LF Mall, 요기요, CJ Mall, 현대Hmall 등 다수의 모바일 앱 딥링크 취약점을 제보한 이력을 보유합니다.</div>
+          </div>
+        </div>
+        <div class="diff-item">
+          <div class="diff-dot"></div>
+          <div>
+            <div class="diff-name">100% 자체 개발 엔진 — 타사 의존 없음</div>
+            <div class="diff-desc">스틸리언 기술연구소가 직접 개발·유지관리하는 독립형 엔진으로 신종 위협 발생 시 즉각 패치 및 대응이 가능합니다.</div>
+          </div>
+        </div>
+        <div class="diff-item">
+          <div class="diff-dot"></div>
+          <div>
+            <div class="diff-name">GS 인증 1등급 + 특허 — 공신력 확보</div>
+            <div class="diff-desc">TTA GS(Good Software) 인증 1등급 획득 및 시그니처 기반 악성 앱 탐지 기술 특허 보유.<br>공공기관 납품 자격을 갖춘 제품입니다.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 우: 라인업 비교 (헤딩은 박스 외부, 표만 박스 유지) -->
+      <div>
+        <div class="lineup-eyebrow">AppSuit AV Type</div>
+        <div class="lineup-title">환경에 맞게 선택하는 AV 라인업</div>
+        <p class="lineup-desc">서비스 운영 환경과 정책 조건에 따라 최적의 보안 적용 방식을 선택하세요.</p>
+        <div class="lineup-wrap">
+          <table class="lineup-table">
+            <thead>
+              <tr>
+                <th>구분</th>
+                <th>AppSuit AV</th>
+                <th>AppSuit AV Lite</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>권장 환경</td>
+                <td>일반 상용 서비스 전체 보안</td>
+                <td>엔터프라이즈·공공 권한 제한 환경</td>
+              </tr>
+              <tr>
+                <td>권한 조건</td>
+                <td>QUERY_ALL_PACKAGES 권한 필요</td>
+                <td>해당 권한 없이 적용 가능</td>
+              </tr>
+              <tr>
+                <td>탐지 범위</td>
+                <td>기기 내 전체 앱 기반 위협 탐지</td>
+                <td>패턴 기반 선택적 탐지</td>
+              </tr>
+              <tr>
+                <td>적용 방식</td>
+                <td>표준 SDK 기반 통합 적용</td>
+                <td>기존 구조 변경 없이 경량 적용</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="lineup-note">두 제품은 동일한 보안 엔진 기반으로 동작하며, 환경과 정책 조건에 따라 최적 방식을 선택해 적용할 수 있습니다.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ⑥ 레퍼런스 -->
+<section class="section" id="ref">
+  <div class="wrap">
+    <div class="sec-title center">핀테크·결제·공공에서 검증된 위협 대응</div>
+    <p class="sec-desc center">실제 보안 위협에 노출되는 금융·핀테크·공공기관이 AppSuit AV를 선택했습니다.</p>
+
+    <!-- 고객사 로고 띠 -->
+    <div class="ref-logo-row">
+      <span class="ref-logo-label">도입 고객사</span>
+      <div class="ref-logo-divider"></div>
+      <div class="ref-logo-list">
+        <span class="ref-logo-pill">유안타증권</span>
+        <span class="ref-logo-pill">쿼터백자산운용</span>
+        <span class="ref-logo-pill">KIS정보통신</span>
+        <span class="ref-logo-pill">한국신용데이터</span>
+        <span class="ref-logo-pill">페이히어</span>
+        <span class="ref-logo-pill">펀블</span>
+        <span class="ref-logo-pill">코인트래빗</span>
+        <span class="ref-logo-pill">레몬트리</span>
+        <span class="ref-logo-pill">경찰청</span>
+        <span class="ref-logo-pill">대한체육회</span>
+      </div>
+    </div>
+
+    <div class="ref-hero-cards">
+      <div class="ref-hero-card">
+        <div class="ref-sector">금융 · 증권</div>
+        <div class="ref-name">유안타증권</div>
+        <div class="ref-badge">금융 서비스 보안 적용</div>
+        <div class="ref-result">모바일 증권 앱 악성코드 탐지 체계 구축</div>
+        <div class="ref-quote">"금융 모바일 서비스에서 요구되는 악성코드 방지 대책을 AppSuit AV로 충족했습니다."</div>
+      </div>
+      <div class="ref-hero-card">
+        <div class="ref-sector">핀테크 · 결제</div>
+        <div class="ref-name">페이히어</div>
+        <div class="ref-badge">결제 앱 보안 인증</div>
+        <div class="ref-result">간편결제 앱 모바일 백신 의무 적용 완료</div>
+        <div class="ref-quote">"결제 서비스 규제 요건을 빠르게 충족하면서도 앱 성능에 영향 없이 도입할 수 있었습니다."</div>
+      </div>
+      <div class="ref-hero-card">
+        <div class="ref-sector">공공기관</div>
+        <div class="ref-name">경찰청</div>
+        <div class="ref-badge">공공기관 조달 납품</div>
+        <div class="ref-result">GS 인증 1등급 제품으로 조달청 납품 완료</div>
+        <div class="ref-quote">"GS 인증을 통한 품질 검증과 조달청 등록으로 공공기관 납품 요건을 모두 충족했습니다."</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ⑦ 인증/규제 -->
+<section class="section" id="cert">
+  <div class="wrap">
+    <div class="sec-title center">품질 인증 및 지식재산권</div>
+    <p class="sec-desc center">공인 인증과 독자 기술 특허를 통해 AppSuit AV의 보안 기술력을 객관적으로 검증받았습니다.</p>
+    <div class="cert-row">
+      <div class="cert-item">
+        <div class="cert-item-eyebrow">TTA</div>
+        <strong>GS 인증 1등급</strong>
+        <span>한국정보통신기술협회(TTA) 소프트웨어 품질인증 1등급. 공공기관 납품 자격과 제품 품질을 공식 검증받은 솔루션입니다.</span>
+      </div>
+      <div class="cert-item">
+        <div class="cert-item-eyebrow">KIPO</div>
+        <strong>특허 등록 — 악성 앱 탐지 기술</strong>
+        <span>시그니처 기반 악성 애플리케이션 탐지 기술 특허 보유. 악성 앱의 고유 패턴을 정밀 분석해 변종 및 우회 공격까지 효과적으로 탐지합니다.</span>
+      </div>
+      <div class="cert-item">
+        <div class="cert-item-eyebrow">KISA</div>
+        <strong>KISA 성능평가 통과</strong>
+        <span>한국인터넷진흥원(KISA) 정보보호제품 성능평가 공식 통과. 탐지율 98%로 검증된 성능을 수치로 확인할 수 있습니다.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ⑧ AppSuit Radar 연동 확장 -->
+<section class="section" id="radar">
+  <div class="wrap">
+    <div class="radar-eyebrow-wrap">
+      <span class="radar-eyebrow">APPSUIT RADAR 연동 확장</span>
+    </div>
+    <div class="sec-title center">악성코드 탐지에서 끝나지 않습니다,<br>Radar 연동으로 더 정교하게 대응합니다</div>
+    <p class="sec-desc center">AppSuit Radar와 연동하여<br>탐지된 위협 정보를 기반으로 보다 정교한 보안 대응이 가능합니다.</p>
+
+    <!-- 중앙 비교 박스 -->
+    <div class="radar-compare">
+      <div class="radar-compare-label">탐지 이후의 대응까지 고려한 구조</div>
+      <div class="radar-compare-row">
+        <div class="radar-pill filled">
+          <div class="radar-pill-label">APPSUIT AV</div>
+          <div class="radar-pill-name">악성코드 탐지 및 차단</div>
+        </div>
+        <div class="radar-arrow">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+          <span class="radar-arrow-label">연동 확장</span>
+        </div>
+        <div class="radar-pill outlined">
+          <div class="radar-pill-label">APPSUIT RADAR</div>
+          <div class="radar-pill-name">위협 앱 분석<br>및 정책 강화</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 하단 좌측 카드 4개 + 우측 모니터링 -->
+    <div class="radar-bottom">
+      <div>
+        <div class="radar-cards-grid">
+          <div class="radar-card">
+            <div class="radar-card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <circle cx="12" cy="12" r="4"></circle>
+                <line x1="21.17" y1="8" x2="12" y2="8"></line>
+                <line x1="3.95" y1="6.06" x2="8.54" y2="14"></line>
+                <line x1="10.88" y1="21.94" x2="15.46" y2="14"></line>
+              </svg>
+            </div>
+            <div class="radar-card-title">위협 탐지 연동</div>
+            <div class="radar-card-desc">악성 앱 및 위협 행위 탐지 정보를 기반으로 감염 가능성이 있는 앱을 선제적으로 차단합니다.</div>
+          </div>
+          <div class="radar-card">
+            <div class="radar-card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+              </svg>
+            </div>
+            <div class="radar-card-title">실시간 대응 강화</div>
+            <div class="radar-card-desc">Radar의 분석 데이터를 활용하여 신종 위협 및 변종 악성코드 대응력을 강화합니다.</div>
+          </div>
+          <div class="radar-card">
+            <div class="radar-card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+            </div>
+            <div class="radar-card-title">통합 보안 운영</div>
+            <div class="radar-card-desc">악성코드 탐지 이력과 차단 현황을 Radar 대시보드에서 통합 관리하여 보안 운영 효율을 높입니다.</div>
+          </div>
+          <div class="radar-card">
+            <div class="radar-card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="20" x2="18" y2="10"></line>
+                <line x1="12" y1="20" x2="12" y2="4"></line>
+                <line x1="6" y1="20" x2="6" y2="14"></line>
+              </svg>
+            </div>
+            <div class="radar-card-title">악성코드 위협 가시화</div>
+            <div class="radar-card-desc">악성 앱 탐지 패턴과 빈도를 분석하여 모바일 보안 위협 동향을 파악합니다.</div>
+          </div>
+        </div>
+        <a href="#" style="display:inline-block;margin-top:16px;font-size:13px;color:var(--teal);text-decoration:none;">AppSuit Radar 더보기 →</a>
+      </div>
+
+      <!-- 우측 모니터링 박스 -->
+      <div class="radar-monitor">
+        <div class="radar-monitor-head">
+          <div>
+            <div class="radar-monitor-meta">악성코드 위협 모니터링</div>
+            <div class="radar-monitor-title">2026년 1분기 탐지 현황</div>
+          </div>
+          <div class="radar-monitor-pulse">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+            </svg>
+          </div>
+        </div>
+
+        <div class="radar-stats">
+          <div class="rstat-box">
+            <div class="rstat-icon r-red">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="3"></circle>
+                <path d="M12 1v6m0 10v6"></path>
+                <path d="M4.22 4.22l4.24 4.24m7.07 7.07l4.24 4.24"></path>
+                <path d="M1 12h6m10 0h6"></path>
+              </svg>
+            </div>
+            <div class="rstat-val">487</div>
+            <div class="rstat-key">악성코드 탐지</div>
+          </div>
+          <div class="rstat-box">
+            <div class="rstat-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+              </svg>
+            </div>
+            <div class="rstat-val">462</div>
+            <div class="rstat-key">차단 건수</div>
+          </div>
+          <div class="rstat-box">
+            <div class="rstat-icon r-amber">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="8" x2="12" y2="12"></line>
+                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+              </svg>
+            </div>
+            <div class="rstat-val">31</div>
+            <div class="rstat-key">신종 위협</div>
+          </div>
+          <div class="rstat-box">
+            <div class="rstat-icon r-purple">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="6" width="20" height="12" rx="2"></rect>
+                <line x1="22" y1="14" x2="22" y2="14"></line>
+                <line x1="2" y1="14" x2="2" y2="14"></line>
+                <line x1="7" y1="14" x2="7" y2="14"></line>
+                <circle cx="17" cy="14" r="1"></circle>
+              </svg>
+            </div>
+            <div class="rstat-val">19</div>
+            <div class="rstat-key">변종 탐지</div>
+          </div>
+        </div>
+
+        <div class="radar-bars">
+          <div class="rbar-row">
+            <span class="rbar-label">악성 앱 탐지</span>
+            <div class="rbar-track"><div class="rbar-fill" style="width:98%"></div></div>
+            <span class="rbar-pct">98%</span>
+          </div>
+          <div class="rbar-row">
+            <span class="rbar-label">신종 악성코드 대응</span>
+            <div class="rbar-track"><div class="rbar-fill" style="width:83%"></div></div>
+            <span class="rbar-pct">83%</span>
+          </div>
+          <div class="rbar-row">
+            <span class="rbar-label">변종 탐지</span>
+            <div class="rbar-track"><div class="rbar-fill" style="width:76%"></div></div>
+            <span class="rbar-pct">76%</span>
+          </div>
+          <div class="rbar-row">
+            <span class="rbar-label">실시간 차단</span>
+            <div class="rbar-track"><div class="rbar-fill" style="width:95%"></div></div>
+            <span class="rbar-pct">95%</span>
+          </div>
+        </div>
+
+        <div class="radar-monitor-foot">* 실제 고객사 집계 데이터 기반</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ⑨ FAQ -->
+<section class="section" id="faq">
+  <div class="wrap">
+    <div class="sec-title center">자주 묻는 질문</div>
+    <div class="faq-list">
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          <span class="faq-q-text">AppSuit AV는 어떤 OS와 개발 환경을 지원하나요?</span>
+          <div class="faq-toggle">+</div>
+        </div>
+        <div class="faq-a">Android와 iOS를 모두 지원하며, React Native·Flutter·Ionic 등 크로스플랫폼 환경에서도 동일하게 적용 가능합니다.<br>신규 OS 출시 시 사전 베타 테스트로 즉각 대응하여 최신 운영체제 호환성을 유지합니다.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          <span class="faq-q-text">금융보안원·행정안전부 규제 요건을 충족하나요?</span>
+          <div class="faq-toggle">+</div>
+        </div>
+        <div class="faq-a">전자금융감독규정(악성코드 감염 방지대책), 모바일 전자정부 서비스 관리 지침, 개인정보의 안전성 확보조치 기준 등 주요 규제의 모바일 백신 요구 항목을 모두 충족합니다.<br>도입 검토 시 공식 준수 문서를 제공해 드립니다.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          <span class="faq-q-text">SDK 적용 후 앱 성능에 영향을 주나요?</span>
+          <div class="faq-toggle">+</div>
+        </div>
+        <div class="faq-a">경량 SDK 방식으로 설계되어 앱 실행 속도 및 배터리 소모에 유의미한 영향이 없습니다.<br>패턴 업데이트는 백그라운드에서 자동 처리되며, 실제 고객사 적용에서도 사용자 경험에 영향을 주지 않음을 확인했습니다. 도입 전 POC를 통해 직접 검증하실 수 있습니다.</div>
+      </div>
+    </div>
+    <a href="/faq" style="display:inline-block;margin-top:20px;font-size:13px;color:var(--teal);text-decoration:none;">FAQ 더보기 →</a>
+  </div>
+</section>
+
+<!-- ⑩ CTA -->
+<section class="cta-section" id="cta">
+  <div class="wrap">
+    <h2>AppSuit AV 도입을 검토 중이신가요?</h2>
+    <p>화이트해커가 직접 분석한 패턴으로 모바일 악성코드 위협으로부터 앱을 보호하세요.<br>POC 신청·자료 요청·기술 문의 모두 가능합니다.</p>
+    <div class="cta-btns">
+      <a href="#" class="btn-cta-outline">문의하기</a>
+      <a href="#" class="btn-cta">자료 요청</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-inner">
+      <!-- 브랜드 -->
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <svg class="footer-logo-mark" viewBox="0 0 28 28" fill="none">
+            <rect width="28" height="28" rx="6" fill="#5B3FBF" opacity="0.12"/>
+            <path d="M8 14c0-3.3 2.7-6 6-6s6 2.7 6 6-2.7 6-6 6" stroke="#5B3FBF" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="14" cy="14" r="2.5" fill="#5B3FBF"/>
+          </svg>
+          <span class="footer-logo-name">STEALIEN</span>
+        </div>
+        <p class="footer-brand-desc">첨단 기술을 안전하게 제공하는<br>사이버 보안 전문 기업</p>
+        <div class="footer-sns">
+          <div class="footer-sns-icon">f</div>
+          <div class="footer-sns-icon">𝕏</div>
+          <div class="footer-sns-icon">▶</div>
+          <div class="footer-sns-icon">▤</div>
+        </div>
+      </div>
+      <!-- 제품 -->
+      <div class="footer-col">
+        <h5>제품</h5>
+        <a>AppSuit Premium</a>
+        <a>AppSuit Keypad</a>
+        <a style="color:var(--teal);font-weight:500;">AppSuit AV</a>
+        <a>AppSuit RemoteBlock</a>
+        <a>전체 제품 보기</a>
+      </div>
+      <!-- 서비스 + 회사 -->
+      <div class="footer-col">
+        <h5>서비스</h5>
+        <a>보안 컨설팅</a>
+        <a>모의해킹</a>
+        <a>레드팀</a>
+        <a>R&amp;D</a>
+        <h5 style="margin-top:20px;">회사</h5>
+        <a>회사 소개</a>
+        <a>인증 및 수상</a>
+        <a>뉴스·보도자료</a>
+        <a>채용</a>
+      </div>
+      <!-- 연락처 -->
+      <div class="footer-contact">
+        <h5>연락처</h5>
+        <div class="footer-contact-group">
+          <div class="footer-contact-label">영업 문의</div>
+          <div class="footer-contact-tel">02-2088-4834</div>
+          <div class="footer-contact-email">sales@stealien.com</div>
+        </div>
+        <div class="footer-contact-group">
+          <div class="footer-contact-label">기술 지원</div>
+          <div class="footer-contact-tel">02-2088-4835</div>
+          <div class="footer-contact-email">se@stealien.com</div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copyright">COPYRIGHT © 2026 STEALIEN Inc. ALL RIGHTS RESERVED.</span>
+      <div class="footer-bottom-links">
+        <a>개인정보처리방침</a>
+        <a>이용약관</a>
+        <a>사이트맵</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+function toggleFaq(el) {
+  const item = el.closest('.faq-item');
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(i => {
+    i.classList.remove('open');
+    i.querySelector('.faq-toggle').textContent = '+';
+  });
+  if (!isOpen) {
+    item.classList.add('open');
+    item.querySelector('.faq-toggle').textContent = '−';
+  }
+}
+</script>
+</body>
+</html>
